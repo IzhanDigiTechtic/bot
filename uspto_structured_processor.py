@@ -57,6 +57,8 @@ class USPTOStructuredProcessor:
         os.makedirs(f"{download_dir}/zips", exist_ok=True)
         os.makedirs(f"{download_dir}/extracted", exist_ok=True)
         os.makedirs(f"{download_dir}/processed", exist_ok=True)
+        # directory where per-file checkpoints and JSONL processed data are stored
+        self.processed_dir = os.path.join(self.download_dir, 'processed')
 
     def setup_database(self):
         """Connect to database and verify tables exist"""
@@ -105,6 +107,180 @@ class USPTOStructuredProcessor:
         
         return None
 
+    # ---- Checkpoint / resume helpers ----
+    def _safe_name(self, path):
+        """Return a short safe filename derived from the absolute path."""
+        if not path:
+            return 'unknown'
+        h = hashlib.sha1(path.encode('utf-8')).hexdigest()
+        base = os.path.basename(path)
+        base_clean = re.sub(r'[^0-9A-Za-z._-]', '_', base)[:40]
+        return f"{base_clean}-{h}"
+
+    def _checkpoint_file(self, csv_path):
+        name = self._safe_name(os.path.abspath(csv_path))
+        return os.path.join(self.processed_dir, f"{name}.checkpoint.json")
+
+    def _processed_jsonl_file(self, csv_path):
+        name = self._safe_name(os.path.abspath(csv_path))
+        return os.path.join(self.processed_dir, f"{name}.processed.jsonl")
+
+    def load_checkpoint(self, csv_path):
+        cp = self._checkpoint_file(csv_path)
+        if os.path.exists(cp):
+            try:
+                with open(cp, 'r', encoding='utf-8') as fh:
+                    return json.load(fh)
+            except Exception:
+                return None
+        return None
+
+    def save_checkpoint(self, csv_path, rows_read, saved_count):
+        cp = self._checkpoint_file(csv_path)
+        tmp = cp + '.tmp'
+        data = {'rows_read': int(rows_read), 'saved_count': int(saved_count), 'timestamp': datetime.utcnow().isoformat()}
+        try:
+            with open(tmp, 'w', encoding='utf-8') as fh:
+                json.dump(data, fh)
+            os.replace(tmp, cp)
+        except Exception as e:
+            self.logger.error(f"Failed to write checkpoint {cp}: {e}")
+
+    def append_processed_records(self, csv_path, records):
+        """Append iterable of dict records to the per-file JSONL processed file."""
+        if not records:
+            return
+        p = self._processed_jsonl_file(csv_path)
+        try:
+            with open(p, 'a', encoding='utf-8') as fh:
+                for r in records:
+                    fh.write(json.dumps(r, default=str, ensure_ascii=False) + '\n')
+        except Exception as e:
+            self.logger.error(f"Failed to append processed records to {p}: {e}")
+
+    def load_processed_records(self, csv_path):
+        """Read processed JSONL file and return list of records."""
+        p = self._processed_jsonl_file(csv_path)
+        if not os.path.exists(p):
+            return []
+        records = []
+        try:
+            with open(p, 'r', encoding='utf-8') as fh:
+                for line in fh:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        records.append(json.loads(line))
+                    except Exception:
+                        continue
+        except Exception as e:
+            self.logger.error(f"Failed to read processed records from {p}: {e}")
+        return records
+
+    def clear_checkpoint_and_processed(self, csv_path):
+        for p in (self._checkpoint_file(csv_path), self._processed_jsonl_file(csv_path)):
+            try:
+                if os.path.exists(p):
+                    os.remove(p)
+            except Exception as e:
+                self.logger.warning(f"Failed to remove {p}: {e}")
+
+    def resume_from_processed_file(self, csv_path):
+        """Load processed JSONL for csv_path and save to DB. Return saved count or None on fatal error."""
+        records = self.load_processed_records(csv_path)
+        if not records:
+            self.logger.info(f"No processed records found to resume for {csv_path}")
+            return 0
+
+        self.logger.info(f"Resuming DB save for {len(records)} records from {csv_path}")
+        try:
+            saved = self.save_case_files_to_db(records)
+            if saved and saved > 0:
+                self.clear_checkpoint_and_processed(csv_path)
+                self.logger.info(f"Resume successful, saved {saved} records and cleared checkpoint for {csv_path}")
+                return saved
+            else:
+                self.logger.warning(f"Resume saved 0 records for {csv_path}")
+                return 0
+        except Exception as e:
+            self.logger.error(f"Failed to resume save for {csv_path}: {e}")
+            return None
+
+    # ---- Checkpoint / resume helpers ----
+    def _safe_name(self, path):
+        """Return a short safe filename derived from the absolute path."""
+        if not path:
+            return 'unknown'
+        # Use a hash to avoid filesystem issues with long or unusual paths
+        h = hashlib.sha1(path.encode('utf-8')).hexdigest()
+        base = os.path.basename(path)
+        # keep base name prefix for readability
+        base_clean = re.sub(r'[^0-9A-Za-z._-]', '_', base)[:40]
+        return f"{base_clean}-{h}"
+
+    def _checkpoint_file(self, csv_path):
+        name = self._safe_name(os.path.abspath(csv_path))
+        return os.path.join(self.processed_dir, f"{name}.checkpoint.json")
+
+    def _processed_jsonl_file(self, csv_path):
+        name = self._safe_name(os.path.abspath(csv_path))
+        return os.path.join(self.processed_dir, f"{name}.processed.jsonl")
+
+    def load_checkpoint(self, csv_path):
+        cp = self._checkpoint_file(csv_path)
+        if os.path.exists(cp):
+            try:
+                with open(cp, 'r', encoding='utf-8') as fh:
+                    return json.load(fh)
+            except Exception:
+                return None
+        return None
+
+    def save_checkpoint(self, csv_path, rows_read, saved_count):
+        cp = self._checkpoint_file(csv_path)
+        tmp = cp + '.tmp'
+        data = {'rows_read': int(rows_read), 'saved_count': int(saved_count), 'timestamp': datetime.utcnow().isoformat()}
+        try:
+            with open(tmp, 'w', encoding='utf-8') as fh:
+                json.dump(data, fh)
+            os.replace(tmp, cp)
+        except Exception as e:
+            self.logger.error(f"Failed to write checkpoint {cp}: {e}")
+
+    def append_processed_records(self, csv_path, records):
+        """Append iterable of dict records to the per-file JSONL processed file."""
+        if not records:
+            return
+        p = self._processed_jsonl_file(csv_path)
+        try:
+            with open(p, 'a', encoding='utf-8') as fh:
+                for r in records:
+                    fh.write(json.dumps(r, default=str, ensure_ascii=False) + '\n')
+        except Exception as e:
+            self.logger.error(f"Failed to append processed records to {p}: {e}")
+
+    def load_processed_records(self, csv_path):
+        """Read processed JSONL file and return list of records."""
+        p = self._processed_jsonl_file(csv_path)
+        if not os.path.exists(p):
+            return []
+        records = []
+        try:
+            with open(p, 'r', encoding='utf-8') as fh:
+                for line in fh:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        records.append(json.loads(line))
+                    except Exception:
+                        # skip malformed lines
+                        continue
+        except Exception as e:
+            self.logger.error(f"Failed to read processed records from {p}: {e}")
+        return records
+
     def parse_date(self, date_str):
         """Parse various date formats from USPTO data"""
         if not date_str:
@@ -147,13 +323,85 @@ class USPTOStructuredProcessor:
             # If sample_nrows is specified, we only iterate until we've read that many rows
             rows_read = 0
 
+            # Check for existing checkpoint to resume
+            checkpoint = self.load_checkpoint(csv_file_path)
+            checkpoint_rows = checkpoint.get('rows_read', 0) if checkpoint else 0
+            checkpoint_saved = checkpoint.get('saved_count', 0) if checkpoint else 0
+
+            # If there is a processed JSONL already (from a previous run), prefer resuming
+            processed_file = self._processed_jsonl_file(csv_file_path)
+            if os.path.exists(processed_file):
+                records_on_disk = self.load_processed_records(csv_file_path)
+                self.logger.info(f"Found {len(records_on_disk)} processed records on disk for {csv_file_path}; attempting DB resume now")
+                if records_on_disk:
+                    saved = self.resume_from_processed_file(csv_file_path)
+                    self.logger.info(f"Resumed and saved {saved} records from existing processed JSONL for {csv_file_path}")
+                    # we've resumed DB save from on-disk records; return to avoid re-processing CSV
+                    return []
+
             reader = pd.read_csv(csv_file_path, low_memory=False, chunksize=chunk_size)
+            # Log CSV header and first CSV row (helpful to debug null fields coming from Excel/CSV)
+            try:
+                header_preview = pd.read_csv(csv_file_path, nrows=0)
+                self.logger.info(f"CSV columns for {csv_file_path}: {header_preview.columns.tolist()}")
+                # small preview of first row (if any)
+                first_row_preview = pd.read_csv(csv_file_path, nrows=1)
+                if not first_row_preview.empty:
+                    # log dtypes and the first record
+                    self.logger.info(f"First CSV row preview for {csv_file_path}: {first_row_preview.to_dict(orient='records')[0]}")
+                    self.logger.info(f"First CSV dtypes: {first_row_preview.dtypes.to_dict()}")
+            except Exception as e:
+                self.logger.warning(f"Unable to preview CSV header/first row for {csv_file_path}: {e}")
+
+            # If there is an existing processed JSONL, log its first entry and count to help debugging
+            processed_file = self._processed_jsonl_file(csv_file_path)
+            if os.path.exists(processed_file):
+                try:
+                    with open(processed_file, 'r', encoding='utf-8') as pf:
+                        first_line = None
+                        total_lines = 0
+                        for line in pf:
+                            if not line.strip():
+                                continue
+                            total_lines += 1
+                            if first_line is None:
+                                first_line = line.strip()
+                        if first_line:
+                            try:
+                                parsed = json.loads(first_line)
+                            except Exception:
+                                parsed = first_line
+                            self.logger.info(f"Processed JSONL preview for {csv_file_path}: first_record={parsed}, total_processed_lines={total_lines}")
+                        else:
+                            self.logger.info(f"Processed JSONL exists for {csv_file_path} but contains no valid lines")
+                except Exception as e:
+                    self.logger.warning(f"Unable to read processed JSONL for {csv_file_path}: {e}")
             # If pandas returns an iterator, we don't know total rows up-front.
             # Try to get total rows from os.path.getsize as a rough heuristic is not helpful here,
             # so we will log progress by chunks when sample_nrows is not set.
             chunk_index = 0
             for df_chunk in reader:
+                # Normalize column names: strip and lowercase to avoid mismatches from Excel/CSV
+                try:
+                    df_chunk.rename(columns=lambda c: c.strip().lower() if isinstance(c, str) else c, inplace=True)
+                except Exception:
+                    # non-fatal, continue
+                    pass
                 chunk_index += 1
+                # If checkpoint exists, skip chunks until rows_read surpasses checkpoint_rows
+                if checkpoint_rows and rows_read + len(df_chunk) <= checkpoint_rows:
+                    # skip this entire chunk
+                    rows_read += len(df_chunk)
+                    self.logger.info(f"Skipping chunk {chunk_index} ({rows_read} rows) due to checkpoint")
+                    continue
+                elif checkpoint_rows and rows_read < checkpoint_rows:
+                    # partially skip rows from the start of this chunk
+                    skip = checkpoint_rows - rows_read
+                    if skip >= len(df_chunk):
+                        rows_read += len(df_chunk)
+                        continue
+                    df_chunk = df_chunk.iloc[skip:]
+                    self.logger.info(f"Resuming inside chunk {chunk_index}, skipped {skip} rows")
                 if sample_nrows:
                     # trim the chunk to remaining rows needed
                     remaining = sample_nrows - rows_read
@@ -254,8 +502,30 @@ class USPTOStructuredProcessor:
                     }
                     if case_file['serial_number'] and case_file['serial_number'] != 'nan':
                         case_files.append(case_file)
+                    else:
+                        # If serial number is missing for this row, log the raw row once to help debug column shuffles
+                        if rows_read == 0 and chunk_index == 1:
+                            try:
+                                self.logger.warning(f"Row with missing serial_no (first chunk) raw data: {row.to_dict()}\nChunk columns: {df_chunk.columns.tolist()}")
+                            except Exception:
+                                pass
 
-                rows_read += len(df_chunk)
+                rows_in_chunk = len(df_chunk)
+                rows_read += rows_in_chunk
+
+                # Append processed records for this chunk to JSONL so progress is saved to disk
+                try:
+                    self.append_processed_records(csv_file_path, case_files[-rows_in_chunk:])
+                except Exception:
+                    # non-fatal: continue but log
+                    self.logger.exception("Failed to append processed chunk to JSONL")
+
+                # Save checkpoint after chunk processed. saved_count will be unknown until DB save;
+                # store rows_read and an optimistic saved_count from checkpoint_saved
+                try:
+                    self.save_checkpoint(csv_file_path, rows_read, checkpoint_saved)
+                except Exception:
+                    self.logger.exception("Failed to save checkpoint after chunk")
                 # log per-chunk progress when sampling; otherwise log chunk counts
                 if sample_nrows:
                     percent = int(rows_read * 100 / sample_nrows)
@@ -270,6 +540,9 @@ class USPTOStructuredProcessor:
                     break
             
             self.logger.info(f"Processed {len(case_files)} case files from CSV (rows read: {rows_read})")
+            # Always attempt to save processed JSONL to DB after processing
+            saved_count = self.resume_from_processed_file(csv_file_path)
+            self.logger.info(f"Saved {saved_count} case files to database from processed JSONL")
             return case_files
             
         except Exception as e:
@@ -312,26 +585,26 @@ class USPTOStructuredProcessor:
                     ir_status_dt, ir_priority_dt, ir_priority_in, related_other_in,
                     tad_file_id, data_source
                 ) VALUES (
-                    %(serial_number)s, %(registration_number)s, %(filing_date)s, %(registration_date)s,
-                    %(status_code)s, %(status_date)s, %(mark_identification)s, %(mark_drawing_code)s,
-                    %(abandon_dt)s, %(amend_reg_dt)s, %(amend_lb_for_app_in)s, %(amend_lb_for_reg_in)s,
-                    %(amend_lb_itu_in)s, %(amend_lb_use_in)s, %(reg_cancel_cd)s, %(reg_cancel_dt)s,
-                    %(cancel_pend_in)s, %(cert_mark_in)s, %(chg_reg_in)s, %(coll_memb_mark_in)s,
-                    %(coll_serv_mark_in)s, %(coll_trade_mark_in)s, %(draw_color_cur_in)s, %(draw_color_file_in)s,
-                    %(concur_use_in)s, %(concur_use_pend_in)s, %(draw_3d_cur_in)s, %(draw_3d_file_in)s,
-                    %(exm_attorney_name)s, %(lb_use_file_in)s, %(lb_for_app_cur_in)s, %(lb_for_reg_cur_in)s,
-                    %(lb_intl_reg_cur_in)s, %(lb_for_app_file_in)s, %(lb_for_reg_file_in)s, %(lb_intl_reg_file_in)s,
-                    %(lb_none_cur_in)s, %(for_priority_in)s, %(lb_itu_cur_in)s, %(lb_itu_file_in)s,
-                    %(interfer_pend_in)s, %(exm_office_cd)s, %(opposit_pend_in)s, %(amend_principal_in)s,
-                    %(concur_use_pub_in)s, %(publication_dt)s, %(renewal_dt)s, %(renewal_file_in)s,
-                    %(repub_12c_dt)s, %(repub_12c_in)s, %(incontest_ack_in)s, %(incontest_file_in)s,
-                    %(acq_dist_in)s, %(acq_dist_part_in)s, %(use_afdv_acc_in)s, %(use_afdv_file_in)s,
-                    %(use_afdv_par_acc_in)s, %(serv_mark_in)s, %(std_char_claim_in)s, %(cfh_status_cd)s, %(cfh_status_dt)s, %(amend_supp_reg_in)s,
-                    %(supp_reg_in)s, %(trade_mark_in)s, %(lb_use_cur_in)s, %(lb_none_file_in)s,
-                    %(ir_auto_reg_dt)s, %(ir_first_refus_in)s, %(ir_death_dt)s, %(ir_publication_dt)s,
-                    %(ir_registration_dt)s, %(ir_registration_no)s, %(ir_renewal_dt)s, %(ir_status_cd)s,
-                    %(ir_status_dt)s, %(ir_priority_dt)s, %(ir_priority_in)s, %(related_other_in)s,
-                    %(tad_file_id)s, %(data_source)s
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s
                 ) ON CONFLICT (serial_number) DO UPDATE SET
                     registration_number = EXCLUDED.registration_number,
                     filing_date = EXCLUDED.filing_date,
@@ -637,6 +910,15 @@ class USPTOStructuredProcessor:
                     # attempt to use folder name containing the csv or parent folder
                     data_source = parts[-3] + '/' + parts[-2] if len(parts) >= 3 else os.path.basename(root)
                     self.logger.info(f"Found case file CSV: {csv_path} -> source: {data_source}")
+                    # If there is a processed JSONL file (incomplete previous run), resume from it
+                    processed_file = self._processed_jsonl_file(csv_path)
+                    if os.path.exists(processed_file):
+                        self.logger.info(f"Found partial processed file for {csv_path}, attempting resume from disk")
+                        resumed_count = self.resume_from_processed_file(csv_path)
+                        if resumed_count is not None:
+                            processed_total += resumed_count
+                            # after resume, continue to next file
+                            continue
                     # When processing via --all we explicitly request full processing
                     case_files = self.process_case_file_csv(csv_path, data_source, use_sample=False)
                     saved = self.save_case_files_to_db(case_files)

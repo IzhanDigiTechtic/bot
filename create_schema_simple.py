@@ -145,11 +145,12 @@ def create_schema():
         cursor.execute('CREATE INDEX idx_trademark_case_files_registration ON trademark_case_files(registration_number)')
         cursor.execute('CREATE INDEX idx_trademark_case_files_filing_date ON trademark_case_files(filing_date)')
         cursor.execute('CREATE INDEX idx_trademark_case_files_status ON trademark_case_files(status_code)')
-    # mark_identification is TEXT and can be very large. Creating a btree
-    # index on the raw TEXT column may exceed PostgreSQL index row size limits.
-    # Use an expression index on md5(mark_identification) which stores a
-    # fixed-size hash and is safe to index for equality/lookup use-cases.
-    cursor.execute('CREATE INDEX idx_trademark_case_files_mark_id ON trademark_case_files (md5(mark_identification))')
+        
+        # mark_identification is TEXT and can be very large. Creating a btree
+        # index on the raw TEXT column may exceed PostgreSQL index row size limits.
+        # Use an expression index on md5(mark_identification) which stores a
+        # fixed-size hash and is safe to index for equality/lookup use-cases.
+        cursor.execute('CREATE INDEX idx_trademark_case_files_mark_id ON trademark_case_files (md5(mark_identification))')
         
         conn.commit()
         print("Database schema created successfully!")

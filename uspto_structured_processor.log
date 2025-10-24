@@ -495,3 +495,652 @@ Consider a function index of an MD5 hash of the value, or use full text indexing
 2025-10-23 17:40:47,228 - INFO - Processed chunk 127, rows so far: 12691941
 2025-10-23 17:40:47,265 - INFO - Processed 12691941 case files from CSV (rows read: 12691941)
 2025-10-23 17:40:47,601 - ERROR - Database save failed: unsupported format character: '('
+2025-10-23 23:29:33,044 - INFO - Processing sample data with new structured approach
+2025-10-23 23:29:33,129 - ERROR - Database setup failed: connection to server at "localhost" (::1), port 5432 failed: FATAL:  database "trademarks" does not exist
+
+2025-10-23 23:29:33,130 - ERROR - Database setup failed
+2025-10-23 23:30:44,823 - INFO - Processing sample data with new structured approach
+2025-10-23 23:30:45,029 - ERROR - trademark_case_files table does not exist. Please run create_schema_simple.py first.
+2025-10-23 23:30:45,030 - ERROR - Database setup failed
+2025-10-23 23:36:19,356 - INFO - Processing sample data with new structured approach
+2025-10-23 23:36:19,432 - INFO - Database connection successful
+2025-10-23 23:36:19,432 - WARNING - Case file CSV not found
+2025-10-24 00:07:04,125 - INFO - Processing sample data with new structured approach
+2025-10-24 00:07:04,413 - INFO - Database connection successful
+2025-10-24 00:07:04,414 - INFO - Processing case file CSV: uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv
+2025-10-24 00:07:47,844 - INFO - Processed chunk 1, rows so far: 100000
+2025-10-24 01:41:32,114 - INFO - Processing sample data with new structured approach
+2025-10-24 01:41:32,196 - INFO - Database connection successful
+2025-10-24 01:41:32,196 - INFO - Processing case file CSV: uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv
+2025-10-24 01:42:19,279 - INFO - Processed chunk 1, rows so far: 100000
+2025-10-24 01:43:05,917 - INFO - Processed chunk 2, rows so far: 200000
+2025-10-24 01:43:52,088 - INFO - Processed chunk 3, rows so far: 300000
+2025-10-24 01:44:36,987 - INFO - Processed chunk 4, rows so far: 400000
+2025-10-24 01:45:21,320 - INFO - Processed chunk 5, rows so far: 500000
+2025-10-24 01:46:08,417 - INFO - Processed chunk 6, rows so far: 600000
+2025-10-24 01:47:01,372 - INFO - Processed chunk 7, rows so far: 700000
+2025-10-24 01:47:54,869 - INFO - Processed chunk 8, rows so far: 800000
+2025-10-24 01:48:50,710 - INFO - Processed chunk 9, rows so far: 900000
+2025-10-24 01:49:43,970 - INFO - Processed chunk 10, rows so far: 1000000
+2025-10-24 01:50:41,080 - INFO - Processed chunk 11, rows so far: 1100000
+2025-10-24 01:51:36,001 - INFO - Processed chunk 12, rows so far: 1200000
+2025-10-24 01:52:32,677 - INFO - Processed chunk 13, rows so far: 1300000
+2025-10-24 01:53:28,221 - INFO - Processed chunk 14, rows so far: 1400000
+2025-10-24 01:54:25,296 - INFO - Processed chunk 15, rows so far: 1500000
+2025-10-24 01:55:22,603 - INFO - Processed chunk 16, rows so far: 1600000
+2025-10-24 01:56:18,007 - INFO - Processed chunk 17, rows so far: 1700000
+2025-10-24 01:57:14,331 - INFO - Processed chunk 18, rows so far: 1800000
+2025-10-24 01:58:11,322 - INFO - Processed chunk 19, rows so far: 1900000
+2025-10-24 01:59:05,255 - INFO - Processed chunk 20, rows so far: 2000000
+2025-10-24 02:00:02,182 - INFO - Processed chunk 21, rows so far: 2100000
+2025-10-24 02:00:56,077 - INFO - Processed chunk 22, rows so far: 2200000
+2025-10-24 02:01:50,724 - INFO - Processed chunk 23, rows so far: 2300000
+2025-10-24 02:02:46,724 - INFO - Processed chunk 24, rows so far: 2400000
+2025-10-24 02:03:42,473 - INFO - Processed chunk 25, rows so far: 2500000
+2025-10-24 02:04:39,858 - INFO - Processed chunk 26, rows so far: 2600000
+2025-10-24 02:05:34,263 - INFO - Processed chunk 27, rows so far: 2700000
+2025-10-24 02:06:32,988 - INFO - Processed chunk 28, rows so far: 2800000
+2025-10-24 02:07:31,543 - INFO - Processed chunk 29, rows so far: 2900000
+2025-10-24 02:08:27,595 - INFO - Processed chunk 30, rows so far: 3000000
+2025-10-24 02:09:20,940 - INFO - Processed chunk 31, rows so far: 3100000
+2025-10-24 02:10:15,417 - INFO - Processed chunk 32, rows so far: 3200000
+2025-10-24 02:11:09,731 - INFO - Processed chunk 33, rows so far: 3300000
+2025-10-24 02:12:02,349 - INFO - Processed chunk 34, rows so far: 3400000
+2025-10-24 02:13:02,058 - INFO - Processed chunk 35, rows so far: 3500000
+2025-10-24 02:18:16,088 - INFO - Processing sample data with new structured approach
+2025-10-24 02:18:16,394 - INFO - Database connection successful
+2025-10-24 02:18:16,395 - INFO - Processing case file CSV: uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv
+2025-10-24 02:18:17,241 - INFO - Skipping chunk 1 (100000 rows) due to checkpoint
+2025-10-24 02:18:18,089 - INFO - Skipping chunk 2 (200000 rows) due to checkpoint
+2025-10-24 02:18:18,825 - INFO - Skipping chunk 3 (300000 rows) due to checkpoint
+2025-10-24 02:18:19,559 - INFO - Skipping chunk 4 (400000 rows) due to checkpoint
+2025-10-24 02:18:20,280 - INFO - Skipping chunk 5 (500000 rows) due to checkpoint
+2025-10-24 02:18:21,041 - INFO - Skipping chunk 6 (600000 rows) due to checkpoint
+2025-10-24 02:18:22,016 - INFO - Skipping chunk 7 (700000 rows) due to checkpoint
+2025-10-24 02:18:23,054 - INFO - Skipping chunk 8 (800000 rows) due to checkpoint
+2025-10-24 02:18:24,098 - INFO - Skipping chunk 9 (900000 rows) due to checkpoint
+2025-10-24 02:18:25,073 - INFO - Skipping chunk 10 (1000000 rows) due to checkpoint
+2025-10-24 02:18:26,069 - INFO - Skipping chunk 11 (1100000 rows) due to checkpoint
+2025-10-24 02:18:27,109 - INFO - Skipping chunk 12 (1200000 rows) due to checkpoint
+2025-10-24 02:18:28,164 - INFO - Skipping chunk 13 (1300000 rows) due to checkpoint
+2025-10-24 02:18:29,196 - INFO - Skipping chunk 14 (1400000 rows) due to checkpoint
+2025-10-24 02:18:30,238 - INFO - Skipping chunk 15 (1500000 rows) due to checkpoint
+2025-10-24 02:18:31,282 - INFO - Skipping chunk 16 (1600000 rows) due to checkpoint
+2025-10-24 02:18:32,304 - INFO - Skipping chunk 17 (1700000 rows) due to checkpoint
+2025-10-24 02:18:33,356 - INFO - Skipping chunk 18 (1800000 rows) due to checkpoint
+2025-10-24 02:18:34,400 - INFO - Skipping chunk 19 (1900000 rows) due to checkpoint
+2025-10-24 02:18:35,484 - INFO - Skipping chunk 20 (2000000 rows) due to checkpoint
+2025-10-24 02:18:36,533 - INFO - Skipping chunk 21 (2100000 rows) due to checkpoint
+2025-10-24 02:18:37,571 - INFO - Skipping chunk 22 (2200000 rows) due to checkpoint
+2025-10-24 02:18:38,578 - INFO - Skipping chunk 23 (2300000 rows) due to checkpoint
+2025-10-24 02:18:39,741 - INFO - Skipping chunk 24 (2400000 rows) due to checkpoint
+2025-10-24 02:18:40,824 - INFO - Skipping chunk 25 (2500000 rows) due to checkpoint
+2025-10-24 02:18:43,176 - INFO - Skipping chunk 26 (2600000 rows) due to checkpoint
+2025-10-24 02:18:47,635 - INFO - Skipping chunk 27 (2700000 rows) due to checkpoint
+2025-10-24 02:18:51,259 - INFO - Skipping chunk 28 (2800000 rows) due to checkpoint
+2025-10-24 02:18:54,572 - INFO - Skipping chunk 29 (2900000 rows) due to checkpoint
+2025-10-24 02:18:57,371 - INFO - Skipping chunk 30 (3000000 rows) due to checkpoint
+2025-10-24 02:19:00,549 - INFO - Skipping chunk 31 (3100000 rows) due to checkpoint
+2025-10-24 02:19:04,079 - INFO - Skipping chunk 32 (3200000 rows) due to checkpoint
+2025-10-24 02:19:07,525 - INFO - Skipping chunk 33 (3300000 rows) due to checkpoint
+2025-10-24 02:19:10,513 - INFO - Skipping chunk 34 (3400000 rows) due to checkpoint
+2025-10-24 02:19:13,494 - INFO - Skipping chunk 35 (3500000 rows) due to checkpoint
+2025-10-24 02:31:15,496 - INFO - Processing sample data with new structured approach
+2025-10-24 02:31:15,693 - INFO - Database connection successful
+2025-10-24 02:31:15,694 - INFO - Processing case file CSV: uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv
+2025-10-24 02:31:15,724 - INFO - First CSV row preview for uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv: {'serial_no': 60000001, 'abandon_dt': nan, 'amend_reg_dt': nan, 'amend_lb_for_app_in': 0, 'amend_lb_for_reg_in': 0, 'amend_lb_itu_in': 0, 'amend_lb_use_in': 0, 'reg_cancel_cd': nan, 'reg_cancel_dt': nan, 'cancel_pend_in': 0, 'cert_mark_in': 0, 'chg_reg_in': 0, 'coll_memb_mark_in': 0, 'coll_serv_mark_in': 0, 'coll_trade_mark_in': 0, 'draw_color_cur_in': 0, 'draw_color_file_in': 0, 'concur_use_in': 0, 'concur_use_pend_in': 0, 'file_location': nan, 'draw_3d_cur_in': 0, 'draw_3d_file_in': 0, 'exm_attorney_name': nan, 'lb_use_file_in': 0, 'lb_for_app_cur_in': 0, 'lb_for_reg_cur_in': 0, 'lb_intl_reg_cur_in': 0, 'lb_for_app_file_in': 0, 'lb_for_reg_file_in': 0, 'lb_intl_reg_file_in': 0, 'lb_none_cur_in': 0, 'filing_dt': nan, 'for_priority_in': 0, 'lb_itu_cur_in': 0, 'lb_itu_file_in': 0, 'interfer_pend_in': 0, 'exm_office_cd': nan, 'file_location_dt': nan, 'mark_draw_cd': nan, 'mark_id_char': nan, 'opposit_pend_in': 0, 'amend_principal_in': 0, 'concur_use_pub_in': 0, 'publication_dt': nan, 'registration_dt': '1870-10-25', 'renewal_dt': nan, 'renewal_file_in': 0, 'repub_12c_dt': nan, 'repub_12c_in': 0, 'incontest_ack_in': 0, 'incontest_file_in': 0, 'acq_dist_in': 0, 'acq_dist_part_in': 0, 'use_afdv_acc_in': 0, 'use_afdv_file_in': 0, 'use_afdv_par_acc_in': 0, 'serv_mark_in': 0, 'std_char_claim_in': 0, 'cfh_status_cd': 626, 'cfh_status_dt': '2005-10-11', 'amend_supp_reg_in': 0, 'supp_reg_in': 0, 'trade_mark_in': 0, 'lb_use_cur_in': 0, 'lb_none_file_in': 0, 'ir_auto_reg_dt': nan, 'ir_first_refus_in': nan, 'ir_death_dt': nan, 'ir_publication_dt': nan, 'ir_registration_dt': nan, 'ir_registration_no': nan, 'ir_renewal_dt': nan, 'ir_status_cd': nan, 'ir_status_dt': nan, 'ir_priority_dt': nan, 'ir_priority_in': nan, 'related_other_in': nan, 'registration_no': 1, 'tad_file_id': 1}
+2025-10-24 02:38:48,607 - INFO - Processing sample data with new structured approach
+2025-10-24 02:38:48,685 - INFO - Database connection successful
+2025-10-24 02:38:48,685 - INFO - Processing case file CSV: uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv
+2025-10-24 02:38:48,704 - INFO - CSV columns for uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv: ['serial_no', 'abandon_dt', 'amend_reg_dt', 'amend_lb_for_app_in', 'amend_lb_for_reg_in', 'amend_lb_itu_in', 'amend_lb_use_in', 'reg_cancel_cd', 'reg_cancel_dt', 'cancel_pend_in', 'cert_mark_in', 'chg_reg_in', 'coll_memb_mark_in', 'coll_serv_mark_in', 'coll_trade_mark_in', 'draw_color_cur_in', 'draw_color_file_in', 'concur_use_in', 'concur_use_pend_in', 'file_location', 'draw_3d_cur_in', 'draw_3d_file_in', 'exm_attorney_name', 'lb_use_file_in', 'lb_for_app_cur_in', 'lb_for_reg_cur_in', 'lb_intl_reg_cur_in', 'lb_for_app_file_in', 'lb_for_reg_file_in', 'lb_intl_reg_file_in', 'lb_none_cur_in', 'filing_dt', 'for_priority_in', 'lb_itu_cur_in', 'lb_itu_file_in', 'interfer_pend_in', 'exm_office_cd', 'file_location_dt', 'mark_draw_cd', 'mark_id_char', 'opposit_pend_in', 'amend_principal_in', 'concur_use_pub_in', 'publication_dt', 'registration_dt', 'renewal_dt', 'renewal_file_in', 'repub_12c_dt', 'repub_12c_in', 'incontest_ack_in', 'incontest_file_in', 'acq_dist_in', 'acq_dist_part_in', 'use_afdv_acc_in', 'use_afdv_file_in', 'use_afdv_par_acc_in', 'serv_mark_in', 'std_char_claim_in', 'cfh_status_cd', 'cfh_status_dt', 'amend_supp_reg_in', 'supp_reg_in', 'trade_mark_in', 'lb_use_cur_in', 'lb_none_file_in', 'ir_auto_reg_dt', 'ir_first_refus_in', 'ir_death_dt', 'ir_publication_dt', 'ir_registration_dt', 'ir_registration_no', 'ir_renewal_dt', 'ir_status_cd', 'ir_status_dt', 'ir_priority_dt', 'ir_priority_in', 'related_other_in', 'registration_no', 'tad_file_id']
+2025-10-24 02:38:48,729 - INFO - First CSV row preview for uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv: {'serial_no': 60000001, 'abandon_dt': nan, 'amend_reg_dt': nan, 'amend_lb_for_app_in': 0, 'amend_lb_for_reg_in': 0, 'amend_lb_itu_in': 0, 'amend_lb_use_in': 0, 'reg_cancel_cd': nan, 'reg_cancel_dt': nan, 'cancel_pend_in': 0, 'cert_mark_in': 0, 'chg_reg_in': 0, 'coll_memb_mark_in': 0, 'coll_serv_mark_in': 0, 'coll_trade_mark_in': 0, 'draw_color_cur_in': 0, 'draw_color_file_in': 0, 'concur_use_in': 0, 'concur_use_pend_in': 0, 'file_location': nan, 'draw_3d_cur_in': 0, 'draw_3d_file_in': 0, 'exm_attorney_name': nan, 'lb_use_file_in': 0, 'lb_for_app_cur_in': 0, 'lb_for_reg_cur_in': 0, 'lb_intl_reg_cur_in': 0, 'lb_for_app_file_in': 0, 'lb_for_reg_file_in': 0, 'lb_intl_reg_file_in': 0, 'lb_none_cur_in': 0, 'filing_dt': nan, 'for_priority_in': 0, 'lb_itu_cur_in': 0, 'lb_itu_file_in': 0, 'interfer_pend_in': 0, 'exm_office_cd': nan, 'file_location_dt': nan, 'mark_draw_cd': nan, 'mark_id_char': nan, 'opposit_pend_in': 0, 'amend_principal_in': 0, 'concur_use_pub_in': 0, 'publication_dt': nan, 'registration_dt': '1870-10-25', 'renewal_dt': nan, 'renewal_file_in': 0, 'repub_12c_dt': nan, 'repub_12c_in': 0, 'incontest_ack_in': 0, 'incontest_file_in': 0, 'acq_dist_in': 0, 'acq_dist_part_in': 0, 'use_afdv_acc_in': 0, 'use_afdv_file_in': 0, 'use_afdv_par_acc_in': 0, 'serv_mark_in': 0, 'std_char_claim_in': 0, 'cfh_status_cd': 626, 'cfh_status_dt': '2005-10-11', 'amend_supp_reg_in': 0, 'supp_reg_in': 0, 'trade_mark_in': 0, 'lb_use_cur_in': 0, 'lb_none_file_in': 0, 'ir_auto_reg_dt': nan, 'ir_first_refus_in': nan, 'ir_death_dt': nan, 'ir_publication_dt': nan, 'ir_registration_dt': nan, 'ir_registration_no': nan, 'ir_renewal_dt': nan, 'ir_status_cd': nan, 'ir_status_dt': nan, 'ir_priority_dt': nan, 'ir_priority_in': nan, 'related_other_in': nan, 'registration_no': 1, 'tad_file_id': 1}
+2025-10-24 02:38:48,733 - INFO - First CSV dtypes: {'serial_no': dtype('int64'), 'abandon_dt': dtype('float64'), 'amend_reg_dt': dtype('float64'), 'amend_lb_for_app_in': dtype('int64'), 'amend_lb_for_reg_in': dtype('int64'), 'amend_lb_itu_in': dtype('int64'), 'amend_lb_use_in': dtype('int64'), 'reg_cancel_cd': dtype('float64'), 'reg_cancel_dt': dtype('float64'), 'cancel_pend_in': dtype('int64'), 'cert_mark_in': dtype('int64'), 'chg_reg_in': dtype('int64'), 'coll_memb_mark_in': dtype('int64'), 'coll_serv_mark_in': dtype('int64'), 'coll_trade_mark_in': dtype('int64'), 'draw_color_cur_in': dtype('int64'), 'draw_color_file_in': dtype('int64'), 'concur_use_in': dtype('int64'), 'concur_use_pend_in': dtype('int64'), 'file_location': dtype('float64'), 'draw_3d_cur_in': dtype('int64'), 'draw_3d_file_in': dtype('int64'), 'exm_attorney_name': dtype('float64'), 'lb_use_file_in': dtype('int64'), 'lb_for_app_cur_in': dtype('int64'), 'lb_for_reg_cur_in': dtype('int64'), 'lb_intl_reg_cur_in': dtype('int64'), 'lb_for_app_file_in': dtype('int64'), 'lb_for_reg_file_in': dtype('int64'), 'lb_intl_reg_file_in': dtype('int64'), 'lb_none_cur_in': dtype('int64'), 'filing_dt': dtype('float64'), 'for_priority_in': dtype('int64'), 'lb_itu_cur_in': dtype('int64'), 'lb_itu_file_in': dtype('int64'), 'interfer_pend_in': dtype('int64'), 'exm_office_cd': dtype('float64'), 'file_location_dt': dtype('float64'), 'mark_draw_cd': dtype('float64'), 'mark_id_char': dtype('float64'), 'opposit_pend_in': dtype('int64'), 'amend_principal_in': dtype('int64'), 'concur_use_pub_in': dtype('int64'), 'publication_dt': dtype('float64'), 'registration_dt': dtype('O'), 'renewal_dt': dtype('float64'), 'renewal_file_in': dtype('int64'), 'repub_12c_dt': dtype('float64'), 'repub_12c_in': dtype('int64'), 'incontest_ack_in': dtype('int64'), 'incontest_file_in': dtype('int64'), 'acq_dist_in': dtype('int64'), 'acq_dist_part_in': dtype('int64'), 'use_afdv_acc_in': dtype('int64'), 'use_afdv_file_in': dtype('int64'), 'use_afdv_par_acc_in': dtype('int64'), 'serv_mark_in': dtype('int64'), 'std_char_claim_in': dtype('int64'), 'cfh_status_cd': dtype('int64'), 'cfh_status_dt': dtype('O'), 'amend_supp_reg_in': dtype('int64'), 'supp_reg_in': dtype('int64'), 'trade_mark_in': dtype('int64'), 'lb_use_cur_in': dtype('int64'), 'lb_none_file_in': dtype('int64'), 'ir_auto_reg_dt': dtype('float64'), 'ir_first_refus_in': dtype('float64'), 'ir_death_dt': dtype('float64'), 'ir_publication_dt': dtype('float64'), 'ir_registration_dt': dtype('float64'), 'ir_registration_no': dtype('float64'), 'ir_renewal_dt': dtype('float64'), 'ir_status_cd': dtype('float64'), 'ir_status_dt': dtype('float64'), 'ir_priority_dt': dtype('float64'), 'ir_priority_in': dtype('float64'), 'related_other_in': dtype('float64'), 'registration_no': dtype('int64'), 'tad_file_id': dtype('int64')}
+2025-10-24 02:39:09,185 - INFO - Processed JSONL preview for uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv: first_record={'serial_number': '60000001', 'registration_number': '1', 'filing_date': None, 'registration_date': '1870-10-25', 'status_code': None, 'status_date': None, 'mark_identification': None, 'mark_drawing_code': None, 'abandon_dt': None, 'amend_reg_dt': None, 'amend_lb_for_app_in': False, 'amend_lb_for_reg_in': False, 'amend_lb_itu_in': False, 'amend_lb_use_in': False, 'reg_cancel_cd': None, 'reg_cancel_dt': None, 'cancel_pend_in': False, 'cert_mark_in': False, 'chg_reg_in': False, 'coll_memb_mark_in': False, 'coll_serv_mark_in': False, 'coll_trade_mark_in': False, 'draw_color_cur_in': False, 'draw_color_file_in': False, 'concur_use_in': False, 'concur_use_pend_in': False, 'draw_3d_cur_in': False, 'draw_3d_file_in': False, 'exm_attorney_name': None, 'lb_use_file_in': False, 'lb_for_app_cur_in': False, 'lb_for_reg_cur_in': False, 'lb_intl_reg_cur_in': False, 'lb_for_app_file_in': False, 'lb_for_reg_file_in': False, 'lb_intl_reg_file_in': False, 'lb_none_cur_in': False, 'for_priority_in': False, 'lb_itu_cur_in': False, 'lb_itu_file_in': False, 'interfer_pend_in': False, 'exm_office_cd': None, 'opposit_pend_in': False, 'amend_principal_in': False, 'concur_use_pub_in': False, 'publication_dt': None, 'renewal_dt': None, 'renewal_file_in': False, 'repub_12c_dt': None, 'repub_12c_in': False, 'incontest_ack_in': False, 'incontest_file_in': False, 'acq_dist_in': False, 'acq_dist_part_in': False, 'use_afdv_acc_in': False, 'use_afdv_file_in': False, 'use_afdv_par_acc_in': False, 'serv_mark_in': False, 'std_char_claim_in': False, 'cfh_status_cd': 626, 'cfh_status_dt': '2005-10-11', 'amend_supp_reg_in': False, 'supp_reg_in': False, 'trade_mark_in': False, 'lb_use_cur_in': False, 'lb_none_file_in': False, 'ir_auto_reg_dt': None, 'ir_first_refus_in': None, 'ir_death_dt': None, 'ir_publication_dt': None, 'ir_registration_dt': None, 'ir_registration_no': None, 'ir_renewal_dt': None, 'ir_status_cd': None, 'ir_status_dt': None, 'ir_priority_dt': None, 'ir_priority_in': None, 'related_other_in': None, 'tad_file_id': 1, 'data_source': 'TRCFECO2/case_file.csv.zip [CSV]'}, total_processed_lines=3500000
+2025-10-24 02:39:10,005 - INFO - Skipping chunk 1 (100000 rows) due to checkpoint
+2025-10-24 02:39:10,809 - INFO - Skipping chunk 2 (200000 rows) due to checkpoint
+2025-10-24 02:39:11,558 - INFO - Skipping chunk 3 (300000 rows) due to checkpoint
+2025-10-24 02:39:12,316 - INFO - Skipping chunk 4 (400000 rows) due to checkpoint
+2025-10-24 02:39:13,082 - INFO - Skipping chunk 5 (500000 rows) due to checkpoint
+2025-10-24 02:39:13,872 - INFO - Skipping chunk 6 (600000 rows) due to checkpoint
+2025-10-24 02:39:14,870 - INFO - Skipping chunk 7 (700000 rows) due to checkpoint
+2025-10-24 02:39:15,896 - INFO - Skipping chunk 8 (800000 rows) due to checkpoint
+2025-10-24 02:39:16,902 - INFO - Skipping chunk 9 (900000 rows) due to checkpoint
+2025-10-24 02:39:18,105 - INFO - Skipping chunk 10 (1000000 rows) due to checkpoint
+2025-10-24 02:39:19,219 - INFO - Skipping chunk 11 (1100000 rows) due to checkpoint
+2025-10-24 02:39:20,346 - INFO - Skipping chunk 12 (1200000 rows) due to checkpoint
+2025-10-24 02:39:21,545 - INFO - Skipping chunk 13 (1300000 rows) due to checkpoint
+2025-10-24 02:39:22,624 - INFO - Skipping chunk 14 (1400000 rows) due to checkpoint
+2025-10-24 02:39:23,933 - INFO - Skipping chunk 15 (1500000 rows) due to checkpoint
+2025-10-24 02:39:25,020 - INFO - Skipping chunk 16 (1600000 rows) due to checkpoint
+2025-10-24 02:39:26,124 - INFO - Skipping chunk 17 (1700000 rows) due to checkpoint
+2025-10-24 02:39:27,293 - INFO - Skipping chunk 18 (1800000 rows) due to checkpoint
+2025-10-24 02:39:28,526 - INFO - Skipping chunk 19 (1900000 rows) due to checkpoint
+2025-10-24 02:39:29,649 - INFO - Skipping chunk 20 (2000000 rows) due to checkpoint
+2025-10-24 02:39:30,774 - INFO - Skipping chunk 21 (2100000 rows) due to checkpoint
+2025-10-24 02:39:31,963 - INFO - Skipping chunk 22 (2200000 rows) due to checkpoint
+2025-10-24 02:39:33,154 - INFO - Skipping chunk 23 (2300000 rows) due to checkpoint
+2025-10-24 02:39:34,374 - INFO - Skipping chunk 24 (2400000 rows) due to checkpoint
+2025-10-24 02:39:35,479 - INFO - Skipping chunk 25 (2500000 rows) due to checkpoint
+2025-10-24 02:39:36,612 - INFO - Skipping chunk 26 (2600000 rows) due to checkpoint
+2025-10-24 02:39:37,777 - INFO - Skipping chunk 27 (2700000 rows) due to checkpoint
+2025-10-24 02:39:38,845 - INFO - Skipping chunk 28 (2800000 rows) due to checkpoint
+2025-10-24 02:39:39,980 - INFO - Skipping chunk 29 (2900000 rows) due to checkpoint
+2025-10-24 02:39:41,066 - INFO - Skipping chunk 30 (3000000 rows) due to checkpoint
+2025-10-24 02:39:42,104 - INFO - Skipping chunk 31 (3100000 rows) due to checkpoint
+2025-10-24 02:39:43,177 - INFO - Skipping chunk 32 (3200000 rows) due to checkpoint
+2025-10-24 02:39:44,210 - INFO - Skipping chunk 33 (3300000 rows) due to checkpoint
+2025-10-24 02:39:45,273 - INFO - Skipping chunk 34 (3400000 rows) due to checkpoint
+2025-10-24 02:39:46,333 - INFO - Skipping chunk 35 (3500000 rows) due to checkpoint
+2025-10-24 02:40:42,687 - INFO - Processed chunk 36, rows so far: 3600000
+2025-10-24 02:41:43,809 - INFO - Processed chunk 37, rows so far: 3700000
+2025-10-24 02:42:54,495 - INFO - Processed chunk 38, rows so far: 3800000
+2025-10-24 02:44:04,533 - INFO - Processed chunk 39, rows so far: 3900000
+2025-10-24 02:45:13,165 - INFO - Processed chunk 40, rows so far: 4000000
+2025-10-24 02:46:24,740 - INFO - Processed chunk 41, rows so far: 4100000
+2025-10-24 02:47:45,198 - INFO - Processed chunk 42, rows so far: 4200000
+2025-10-24 02:48:48,248 - INFO - Processed chunk 43, rows so far: 4300000
+2025-10-24 02:49:52,665 - INFO - Processed chunk 44, rows so far: 4400000
+2025-10-24 02:50:50,348 - INFO - Processed chunk 45, rows so far: 4500000
+2025-10-24 02:51:48,591 - INFO - Processed chunk 46, rows so far: 4600000
+2025-10-24 02:52:49,136 - INFO - Processed chunk 47, rows so far: 4700000
+2025-10-24 02:53:59,251 - INFO - Processed chunk 48, rows so far: 4800000
+2025-10-24 02:55:11,868 - INFO - Processed chunk 49, rows so far: 4900000
+2025-10-24 02:56:16,448 - INFO - Processed chunk 50, rows so far: 5000000
+2025-10-24 02:57:17,266 - INFO - Processed chunk 51, rows so far: 5100000
+2025-10-24 02:58:18,615 - INFO - Processed chunk 52, rows so far: 5200000
+2025-10-24 02:59:27,830 - INFO - Processed chunk 53, rows so far: 5300000
+2025-10-24 03:00:29,784 - INFO - Processed chunk 54, rows so far: 5400000
+2025-10-24 03:01:30,271 - INFO - Processed chunk 55, rows so far: 5500000
+2025-10-24 03:02:34,940 - INFO - Processed chunk 56, rows so far: 5600000
+2025-10-24 03:03:44,957 - INFO - Processed chunk 57, rows so far: 5700000
+2025-10-24 03:05:07,088 - INFO - Processed chunk 58, rows so far: 5800000
+2025-10-24 03:06:10,018 - INFO - Processed chunk 59, rows so far: 5900000
+2025-10-24 03:07:18,912 - INFO - Processed chunk 60, rows so far: 6000000
+2025-10-24 03:08:49,478 - INFO - Processed chunk 61, rows so far: 6100000
+2025-10-24 03:10:04,623 - INFO - Processed chunk 62, rows so far: 6200000
+2025-10-24 03:11:27,477 - INFO - Processed chunk 63, rows so far: 6300000
+2025-10-24 03:12:33,532 - INFO - Processed chunk 64, rows so far: 6400000
+2025-10-24 03:13:50,483 - INFO - Processed chunk 65, rows so far: 6500000
+2025-10-24 03:15:04,784 - INFO - Processed chunk 66, rows so far: 6600000
+2025-10-24 03:16:01,051 - INFO - Processed chunk 67, rows so far: 6700000
+2025-10-24 03:16:58,959 - INFO - Processed chunk 68, rows so far: 6800000
+2025-10-24 03:17:56,361 - INFO - Processed chunk 69, rows so far: 6900000
+2025-10-24 03:18:51,632 - INFO - Processed chunk 70, rows so far: 7000000
+2025-10-24 03:19:46,449 - INFO - Processed chunk 71, rows so far: 7100000
+2025-10-24 03:20:42,123 - INFO - Processed chunk 72, rows so far: 7200000
+2025-10-24 03:21:38,285 - INFO - Processed chunk 73, rows so far: 7300000
+2025-10-24 03:22:34,129 - INFO - Processed chunk 74, rows so far: 7400000
+2025-10-24 03:23:29,399 - INFO - Processed chunk 75, rows so far: 7500000
+2025-10-24 03:24:23,625 - INFO - Processed chunk 76, rows so far: 7600000
+2025-10-24 03:25:18,294 - INFO - Processed chunk 77, rows so far: 7700000
+2025-10-24 03:26:09,415 - INFO - Processed chunk 78, rows so far: 7800000
+2025-10-24 03:27:03,192 - INFO - Processed chunk 79, rows so far: 7900000
+2025-10-24 03:27:55,376 - INFO - Processed chunk 80, rows so far: 8000000
+2025-10-24 03:28:49,460 - INFO - Processed chunk 81, rows so far: 8100000
+2025-10-24 03:29:43,795 - INFO - Processed chunk 82, rows so far: 8200000
+2025-10-24 03:30:37,811 - INFO - Processed chunk 83, rows so far: 8300000
+2025-10-24 03:31:32,378 - INFO - Processed chunk 84, rows so far: 8400000
+2025-10-24 03:32:21,004 - INFO - Processed chunk 85, rows so far: 8500000
+2025-10-24 03:33:14,849 - INFO - Processed chunk 86, rows so far: 8600000
+2025-10-24 03:34:07,869 - INFO - Processed chunk 87, rows so far: 8700000
+2025-10-24 03:35:03,611 - INFO - Processed chunk 88, rows so far: 8800000
+2025-10-24 03:36:07,469 - INFO - Processed chunk 89, rows so far: 8900000
+2025-10-24 03:37:35,163 - INFO - Processed chunk 90, rows so far: 9000000
+2025-10-24 03:38:40,603 - INFO - Processed chunk 91, rows so far: 9100000
+2025-10-24 03:39:33,448 - INFO - Processed chunk 92, rows so far: 9200000
+2025-10-24 03:40:28,431 - INFO - Processed chunk 93, rows so far: 9300000
+2025-10-24 03:41:21,962 - INFO - Processed chunk 94, rows so far: 9400000
+2025-10-24 03:42:15,196 - INFO - Processed chunk 95, rows so far: 9500000
+2025-10-24 03:43:03,886 - INFO - Processed chunk 96, rows so far: 9600000
+2025-10-24 03:43:57,563 - INFO - Processed chunk 97, rows so far: 9700000
+2025-10-24 03:44:51,336 - INFO - Processed chunk 98, rows so far: 9800000
+2025-10-24 03:45:45,135 - INFO - Processed chunk 99, rows so far: 9900000
+2025-10-24 03:46:50,791 - INFO - Processed chunk 100, rows so far: 10000000
+2025-10-24 03:47:45,940 - INFO - Processed chunk 101, rows so far: 10100000
+2025-10-24 03:48:39,083 - INFO - Processed chunk 102, rows so far: 10200000
+2025-10-24 03:49:32,589 - INFO - Processed chunk 103, rows so far: 10300000
+2025-10-24 03:50:26,802 - INFO - Processed chunk 104, rows so far: 10400000
+2025-10-24 03:51:21,032 - INFO - Processed chunk 105, rows so far: 10500000
+2025-10-24 03:52:17,392 - INFO - Processed chunk 106, rows so far: 10600000
+2025-10-24 03:53:12,294 - INFO - Processed chunk 107, rows so far: 10700000
+2025-10-24 03:54:05,892 - INFO - Processed chunk 108, rows so far: 10800000
+2025-10-24 03:54:59,428 - INFO - Processed chunk 109, rows so far: 10900000
+2025-10-24 03:55:53,237 - INFO - Processed chunk 110, rows so far: 11000000
+2025-10-24 03:56:47,382 - INFO - Processed chunk 111, rows so far: 11100000
+2025-10-24 03:57:40,423 - INFO - Processed chunk 112, rows so far: 11200000
+2025-10-24 03:58:33,754 - INFO - Processed chunk 113, rows so far: 11300000
+2025-10-24 03:59:24,203 - INFO - Processed chunk 114, rows so far: 11400000
+2025-10-24 04:00:12,273 - INFO - Processed chunk 115, rows so far: 11500000
+2025-10-24 04:01:00,523 - INFO - Processed chunk 116, rows so far: 11600000
+2025-10-24 04:01:53,442 - INFO - Processed chunk 117, rows so far: 11700000
+2025-10-24 04:02:47,416 - INFO - Processed chunk 118, rows so far: 11800000
+2025-10-24 04:03:42,610 - INFO - Processed chunk 119, rows so far: 11900000
+2025-10-24 04:04:45,374 - INFO - Processed chunk 120, rows so far: 12000000
+2025-10-24 04:05:40,212 - INFO - Processed chunk 121, rows so far: 12100000
+2025-10-24 04:06:33,337 - INFO - Processed chunk 122, rows so far: 12200000
+2025-10-24 04:07:26,513 - INFO - Processed chunk 123, rows so far: 12300000
+2025-10-24 04:08:22,093 - INFO - Processed chunk 124, rows so far: 12400000
+2025-10-24 04:09:11,852 - INFO - Processed chunk 125, rows so far: 12500000
+2025-10-24 04:10:05,119 - INFO - Processed chunk 126, rows so far: 12600000
+2025-10-24 04:10:53,761 - INFO - Processed chunk 127, rows so far: 12691941
+2025-10-24 04:10:53,796 - INFO - Processed 9191941 case files from CSV (rows read: 12691941)
+2025-10-24 04:10:54,644 - ERROR - Database save failed: unsupported format character: '('
+2025-10-24 04:10:54,648 - INFO - Successfully processed and saved 0 case files
+2025-10-24 05:21:56,595 - INFO - Processing sample data with new structured approach
+2025-10-24 05:21:56,807 - INFO - Database connection successful
+2025-10-24 05:21:56,808 - INFO - Processing case file CSV: uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv
+2025-10-24 05:21:56,853 - INFO - CSV columns for uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv: ['serial_no', 'abandon_dt', 'amend_reg_dt', 'amend_lb_for_app_in', 'amend_lb_for_reg_in', 'amend_lb_itu_in', 'amend_lb_use_in', 'reg_cancel_cd', 'reg_cancel_dt', 'cancel_pend_in', 'cert_mark_in', 'chg_reg_in', 'coll_memb_mark_in', 'coll_serv_mark_in', 'coll_trade_mark_in', 'draw_color_cur_in', 'draw_color_file_in', 'concur_use_in', 'concur_use_pend_in', 'file_location', 'draw_3d_cur_in', 'draw_3d_file_in', 'exm_attorney_name', 'lb_use_file_in', 'lb_for_app_cur_in', 'lb_for_reg_cur_in', 'lb_intl_reg_cur_in', 'lb_for_app_file_in', 'lb_for_reg_file_in', 'lb_intl_reg_file_in', 'lb_none_cur_in', 'filing_dt', 'for_priority_in', 'lb_itu_cur_in', 'lb_itu_file_in', 'interfer_pend_in', 'exm_office_cd', 'file_location_dt', 'mark_draw_cd', 'mark_id_char', 'opposit_pend_in', 'amend_principal_in', 'concur_use_pub_in', 'publication_dt', 'registration_dt', 'renewal_dt', 'renewal_file_in', 'repub_12c_dt', 'repub_12c_in', 'incontest_ack_in', 'incontest_file_in', 'acq_dist_in', 'acq_dist_part_in', 'use_afdv_acc_in', 'use_afdv_file_in', 'use_afdv_par_acc_in', 'serv_mark_in', 'std_char_claim_in', 'cfh_status_cd', 'cfh_status_dt', 'amend_supp_reg_in', 'supp_reg_in', 'trade_mark_in', 'lb_use_cur_in', 'lb_none_file_in', 'ir_auto_reg_dt', 'ir_first_refus_in', 'ir_death_dt', 'ir_publication_dt', 'ir_registration_dt', 'ir_registration_no', 'ir_renewal_dt', 'ir_status_cd', 'ir_status_dt', 'ir_priority_dt', 'ir_priority_in', 'related_other_in', 'registration_no', 'tad_file_id']
+2025-10-24 05:21:56,878 - INFO - First CSV row preview for uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv: {'serial_no': 60000001, 'abandon_dt': nan, 'amend_reg_dt': nan, 'amend_lb_for_app_in': 0, 'amend_lb_for_reg_in': 0, 'amend_lb_itu_in': 0, 'amend_lb_use_in': 0, 'reg_cancel_cd': nan, 'reg_cancel_dt': nan, 'cancel_pend_in': 0, 'cert_mark_in': 0, 'chg_reg_in': 0, 'coll_memb_mark_in': 0, 'coll_serv_mark_in': 0, 'coll_trade_mark_in': 0, 'draw_color_cur_in': 0, 'draw_color_file_in': 0, 'concur_use_in': 0, 'concur_use_pend_in': 0, 'file_location': nan, 'draw_3d_cur_in': 0, 'draw_3d_file_in': 0, 'exm_attorney_name': nan, 'lb_use_file_in': 0, 'lb_for_app_cur_in': 0, 'lb_for_reg_cur_in': 0, 'lb_intl_reg_cur_in': 0, 'lb_for_app_file_in': 0, 'lb_for_reg_file_in': 0, 'lb_intl_reg_file_in': 0, 'lb_none_cur_in': 0, 'filing_dt': nan, 'for_priority_in': 0, 'lb_itu_cur_in': 0, 'lb_itu_file_in': 0, 'interfer_pend_in': 0, 'exm_office_cd': nan, 'file_location_dt': nan, 'mark_draw_cd': nan, 'mark_id_char': nan, 'opposit_pend_in': 0, 'amend_principal_in': 0, 'concur_use_pub_in': 0, 'publication_dt': nan, 'registration_dt': '1870-10-25', 'renewal_dt': nan, 'renewal_file_in': 0, 'repub_12c_dt': nan, 'repub_12c_in': 0, 'incontest_ack_in': 0, 'incontest_file_in': 0, 'acq_dist_in': 0, 'acq_dist_part_in': 0, 'use_afdv_acc_in': 0, 'use_afdv_file_in': 0, 'use_afdv_par_acc_in': 0, 'serv_mark_in': 0, 'std_char_claim_in': 0, 'cfh_status_cd': 626, 'cfh_status_dt': '2005-10-11', 'amend_supp_reg_in': 0, 'supp_reg_in': 0, 'trade_mark_in': 0, 'lb_use_cur_in': 0, 'lb_none_file_in': 0, 'ir_auto_reg_dt': nan, 'ir_first_refus_in': nan, 'ir_death_dt': nan, 'ir_publication_dt': nan, 'ir_registration_dt': nan, 'ir_registration_no': nan, 'ir_renewal_dt': nan, 'ir_status_cd': nan, 'ir_status_dt': nan, 'ir_priority_dt': nan, 'ir_priority_in': nan, 'related_other_in': nan, 'registration_no': 1, 'tad_file_id': 1}
+2025-10-24 05:21:56,883 - INFO - First CSV dtypes: {'serial_no': dtype('int64'), 'abandon_dt': dtype('float64'), 'amend_reg_dt': dtype('float64'), 'amend_lb_for_app_in': dtype('int64'), 'amend_lb_for_reg_in': dtype('int64'), 'amend_lb_itu_in': dtype('int64'), 'amend_lb_use_in': dtype('int64'), 'reg_cancel_cd': dtype('float64'), 'reg_cancel_dt': dtype('float64'), 'cancel_pend_in': dtype('int64'), 'cert_mark_in': dtype('int64'), 'chg_reg_in': dtype('int64'), 'coll_memb_mark_in': dtype('int64'), 'coll_serv_mark_in': dtype('int64'), 'coll_trade_mark_in': dtype('int64'), 'draw_color_cur_in': dtype('int64'), 'draw_color_file_in': dtype('int64'), 'concur_use_in': dtype('int64'), 'concur_use_pend_in': dtype('int64'), 'file_location': dtype('float64'), 'draw_3d_cur_in': dtype('int64'), 'draw_3d_file_in': dtype('int64'), 'exm_attorney_name': dtype('float64'), 'lb_use_file_in': dtype('int64'), 'lb_for_app_cur_in': dtype('int64'), 'lb_for_reg_cur_in': dtype('int64'), 'lb_intl_reg_cur_in': dtype('int64'), 'lb_for_app_file_in': dtype('int64'), 'lb_for_reg_file_in': dtype('int64'), 'lb_intl_reg_file_in': dtype('int64'), 'lb_none_cur_in': dtype('int64'), 'filing_dt': dtype('float64'), 'for_priority_in': dtype('int64'), 'lb_itu_cur_in': dtype('int64'), 'lb_itu_file_in': dtype('int64'), 'interfer_pend_in': dtype('int64'), 'exm_office_cd': dtype('float64'), 'file_location_dt': dtype('float64'), 'mark_draw_cd': dtype('float64'), 'mark_id_char': dtype('float64'), 'opposit_pend_in': dtype('int64'), 'amend_principal_in': dtype('int64'), 'concur_use_pub_in': dtype('int64'), 'publication_dt': dtype('float64'), 'registration_dt': dtype('O'), 'renewal_dt': dtype('float64'), 'renewal_file_in': dtype('int64'), 'repub_12c_dt': dtype('float64'), 'repub_12c_in': dtype('int64'), 'incontest_ack_in': dtype('int64'), 'incontest_file_in': dtype('int64'), 'acq_dist_in': dtype('int64'), 'acq_dist_part_in': dtype('int64'), 'use_afdv_acc_in': dtype('int64'), 'use_afdv_file_in': dtype('int64'), 'use_afdv_par_acc_in': dtype('int64'), 'serv_mark_in': dtype('int64'), 'std_char_claim_in': dtype('int64'), 'cfh_status_cd': dtype('int64'), 'cfh_status_dt': dtype('O'), 'amend_supp_reg_in': dtype('int64'), 'supp_reg_in': dtype('int64'), 'trade_mark_in': dtype('int64'), 'lb_use_cur_in': dtype('int64'), 'lb_none_file_in': dtype('int64'), 'ir_auto_reg_dt': dtype('float64'), 'ir_first_refus_in': dtype('float64'), 'ir_death_dt': dtype('float64'), 'ir_publication_dt': dtype('float64'), 'ir_registration_dt': dtype('float64'), 'ir_registration_no': dtype('float64'), 'ir_renewal_dt': dtype('float64'), 'ir_status_cd': dtype('float64'), 'ir_status_dt': dtype('float64'), 'ir_priority_dt': dtype('float64'), 'ir_priority_in': dtype('float64'), 'related_other_in': dtype('float64'), 'registration_no': dtype('int64'), 'tad_file_id': dtype('int64')}
+2025-10-24 05:25:23,384 - INFO - Processed JSONL preview for uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv: first_record={'serial_number': '60000001', 'registration_number': '1', 'filing_date': None, 'registration_date': '1870-10-25', 'status_code': None, 'status_date': None, 'mark_identification': None, 'mark_drawing_code': None, 'abandon_dt': None, 'amend_reg_dt': None, 'amend_lb_for_app_in': False, 'amend_lb_for_reg_in': False, 'amend_lb_itu_in': False, 'amend_lb_use_in': False, 'reg_cancel_cd': None, 'reg_cancel_dt': None, 'cancel_pend_in': False, 'cert_mark_in': False, 'chg_reg_in': False, 'coll_memb_mark_in': False, 'coll_serv_mark_in': False, 'coll_trade_mark_in': False, 'draw_color_cur_in': False, 'draw_color_file_in': False, 'concur_use_in': False, 'concur_use_pend_in': False, 'draw_3d_cur_in': False, 'draw_3d_file_in': False, 'exm_attorney_name': None, 'lb_use_file_in': False, 'lb_for_app_cur_in': False, 'lb_for_reg_cur_in': False, 'lb_intl_reg_cur_in': False, 'lb_for_app_file_in': False, 'lb_for_reg_file_in': False, 'lb_intl_reg_file_in': False, 'lb_none_cur_in': False, 'for_priority_in': False, 'lb_itu_cur_in': False, 'lb_itu_file_in': False, 'interfer_pend_in': False, 'exm_office_cd': None, 'opposit_pend_in': False, 'amend_principal_in': False, 'concur_use_pub_in': False, 'publication_dt': None, 'renewal_dt': None, 'renewal_file_in': False, 'repub_12c_dt': None, 'repub_12c_in': False, 'incontest_ack_in': False, 'incontest_file_in': False, 'acq_dist_in': False, 'acq_dist_part_in': False, 'use_afdv_acc_in': False, 'use_afdv_file_in': False, 'use_afdv_par_acc_in': False, 'serv_mark_in': False, 'std_char_claim_in': False, 'cfh_status_cd': 626, 'cfh_status_dt': '2005-10-11', 'amend_supp_reg_in': False, 'supp_reg_in': False, 'trade_mark_in': False, 'lb_use_cur_in': False, 'lb_none_file_in': False, 'ir_auto_reg_dt': None, 'ir_first_refus_in': None, 'ir_death_dt': None, 'ir_publication_dt': None, 'ir_registration_dt': None, 'ir_registration_no': None, 'ir_renewal_dt': None, 'ir_status_cd': None, 'ir_status_dt': None, 'ir_priority_dt': None, 'ir_priority_in': None, 'related_other_in': None, 'tad_file_id': 1, 'data_source': 'TRCFECO2/case_file.csv.zip [CSV]'}, total_processed_lines=12691941
+2025-10-24 05:25:24,260 - INFO - Skipping chunk 1 (100000 rows) due to checkpoint
+2025-10-24 05:25:25,201 - INFO - Skipping chunk 2 (200000 rows) due to checkpoint
+2025-10-24 05:25:25,962 - INFO - Skipping chunk 3 (300000 rows) due to checkpoint
+2025-10-24 05:25:26,731 - INFO - Skipping chunk 4 (400000 rows) due to checkpoint
+2025-10-24 05:25:27,558 - INFO - Skipping chunk 5 (500000 rows) due to checkpoint
+2025-10-24 05:25:28,335 - INFO - Skipping chunk 6 (600000 rows) due to checkpoint
+2025-10-24 05:25:29,330 - INFO - Skipping chunk 7 (700000 rows) due to checkpoint
+2025-10-24 05:25:30,363 - INFO - Skipping chunk 8 (800000 rows) due to checkpoint
+2025-10-24 05:25:31,556 - INFO - Skipping chunk 9 (900000 rows) due to checkpoint
+2025-10-24 05:25:32,733 - INFO - Skipping chunk 10 (1000000 rows) due to checkpoint
+2025-10-24 05:25:33,786 - INFO - Skipping chunk 11 (1100000 rows) due to checkpoint
+2025-10-24 05:25:34,837 - INFO - Skipping chunk 12 (1200000 rows) due to checkpoint
+2025-10-24 05:25:35,960 - INFO - Skipping chunk 13 (1300000 rows) due to checkpoint
+2025-10-24 05:25:37,033 - INFO - Skipping chunk 14 (1400000 rows) due to checkpoint
+2025-10-24 05:25:38,183 - INFO - Skipping chunk 15 (1500000 rows) due to checkpoint
+2025-10-24 05:25:39,283 - INFO - Skipping chunk 16 (1600000 rows) due to checkpoint
+2025-10-24 05:25:40,418 - INFO - Skipping chunk 17 (1700000 rows) due to checkpoint
+2025-10-24 05:25:41,516 - INFO - Skipping chunk 18 (1800000 rows) due to checkpoint
+2025-10-24 05:25:42,623 - INFO - Skipping chunk 19 (1900000 rows) due to checkpoint
+2025-10-24 05:25:43,716 - INFO - Skipping chunk 20 (2000000 rows) due to checkpoint
+2025-10-24 05:25:44,860 - INFO - Skipping chunk 21 (2100000 rows) due to checkpoint
+2025-10-24 05:25:45,940 - INFO - Skipping chunk 22 (2200000 rows) due to checkpoint
+2025-10-24 05:25:47,007 - INFO - Skipping chunk 23 (2300000 rows) due to checkpoint
+2025-10-24 05:25:48,115 - INFO - Skipping chunk 24 (2400000 rows) due to checkpoint
+2025-10-24 05:25:49,222 - INFO - Skipping chunk 25 (2500000 rows) due to checkpoint
+2025-10-24 05:25:50,294 - INFO - Skipping chunk 26 (2600000 rows) due to checkpoint
+2025-10-24 05:25:51,385 - INFO - Skipping chunk 27 (2700000 rows) due to checkpoint
+2025-10-24 05:25:52,498 - INFO - Skipping chunk 28 (2800000 rows) due to checkpoint
+2025-10-24 05:25:53,617 - INFO - Skipping chunk 29 (2900000 rows) due to checkpoint
+2025-10-24 05:25:54,749 - INFO - Skipping chunk 30 (3000000 rows) due to checkpoint
+2025-10-24 05:25:55,878 - INFO - Skipping chunk 31 (3100000 rows) due to checkpoint
+2025-10-24 05:25:56,962 - INFO - Skipping chunk 32 (3200000 rows) due to checkpoint
+2025-10-24 05:25:58,058 - INFO - Skipping chunk 33 (3300000 rows) due to checkpoint
+2025-10-24 05:25:59,180 - INFO - Skipping chunk 34 (3400000 rows) due to checkpoint
+2025-10-24 05:26:00,437 - INFO - Skipping chunk 35 (3500000 rows) due to checkpoint
+2025-10-24 05:26:01,536 - INFO - Skipping chunk 36 (3600000 rows) due to checkpoint
+2025-10-24 05:26:02,633 - INFO - Skipping chunk 37 (3700000 rows) due to checkpoint
+2025-10-24 05:26:03,756 - INFO - Skipping chunk 38 (3800000 rows) due to checkpoint
+2025-10-24 05:26:04,888 - INFO - Skipping chunk 39 (3900000 rows) due to checkpoint
+2025-10-24 05:26:06,010 - INFO - Skipping chunk 40 (4000000 rows) due to checkpoint
+2025-10-24 05:26:07,137 - INFO - Skipping chunk 41 (4100000 rows) due to checkpoint
+2025-10-24 05:26:08,277 - INFO - Skipping chunk 42 (4200000 rows) due to checkpoint
+2025-10-24 05:26:09,361 - INFO - Skipping chunk 43 (4300000 rows) due to checkpoint
+2025-10-24 05:26:10,512 - INFO - Skipping chunk 44 (4400000 rows) due to checkpoint
+2025-10-24 05:26:11,612 - INFO - Skipping chunk 45 (4500000 rows) due to checkpoint
+2025-10-24 05:26:12,741 - INFO - Skipping chunk 46 (4600000 rows) due to checkpoint
+2025-10-24 05:26:13,866 - INFO - Skipping chunk 47 (4700000 rows) due to checkpoint
+2025-10-24 05:26:14,991 - INFO - Skipping chunk 48 (4800000 rows) due to checkpoint
+2025-10-24 05:26:16,119 - INFO - Skipping chunk 49 (4900000 rows) due to checkpoint
+2025-10-24 05:26:17,227 - INFO - Skipping chunk 50 (5000000 rows) due to checkpoint
+2025-10-24 05:26:18,294 - INFO - Skipping chunk 51 (5100000 rows) due to checkpoint
+2025-10-24 05:26:19,414 - INFO - Skipping chunk 52 (5200000 rows) due to checkpoint
+2025-10-24 05:26:20,521 - INFO - Skipping chunk 53 (5300000 rows) due to checkpoint
+2025-10-24 05:26:21,626 - INFO - Skipping chunk 54 (5400000 rows) due to checkpoint
+2025-10-24 05:26:22,737 - INFO - Skipping chunk 55 (5500000 rows) due to checkpoint
+2025-10-24 05:26:24,124 - INFO - Skipping chunk 56 (5600000 rows) due to checkpoint
+2025-10-24 05:26:25,302 - INFO - Skipping chunk 57 (5700000 rows) due to checkpoint
+2025-10-24 05:26:26,518 - INFO - Skipping chunk 58 (5800000 rows) due to checkpoint
+2025-10-24 05:26:27,655 - INFO - Skipping chunk 59 (5900000 rows) due to checkpoint
+2025-10-24 05:26:28,954 - INFO - Skipping chunk 60 (6000000 rows) due to checkpoint
+2025-10-24 05:26:30,393 - INFO - Skipping chunk 61 (6100000 rows) due to checkpoint
+2025-10-24 05:26:31,800 - INFO - Skipping chunk 62 (6200000 rows) due to checkpoint
+2025-10-24 05:26:33,173 - INFO - Skipping chunk 63 (6300000 rows) due to checkpoint
+2025-10-24 05:26:34,213 - INFO - Skipping chunk 64 (6400000 rows) due to checkpoint
+2025-10-24 05:26:35,339 - INFO - Skipping chunk 65 (6500000 rows) due to checkpoint
+2025-10-24 05:26:36,501 - INFO - Skipping chunk 66 (6600000 rows) due to checkpoint
+2025-10-24 05:26:37,681 - INFO - Skipping chunk 67 (6700000 rows) due to checkpoint
+2025-10-24 05:26:38,867 - INFO - Skipping chunk 68 (6800000 rows) due to checkpoint
+2025-10-24 05:26:40,028 - INFO - Skipping chunk 69 (6900000 rows) due to checkpoint
+2025-10-24 05:26:41,130 - INFO - Skipping chunk 70 (7000000 rows) due to checkpoint
+2025-10-24 05:26:42,230 - INFO - Skipping chunk 71 (7100000 rows) due to checkpoint
+2025-10-24 05:26:43,387 - INFO - Skipping chunk 72 (7200000 rows) due to checkpoint
+2025-10-24 05:26:44,519 - INFO - Skipping chunk 73 (7300000 rows) due to checkpoint
+2025-10-24 05:26:45,633 - INFO - Skipping chunk 74 (7400000 rows) due to checkpoint
+2025-10-24 05:26:46,730 - INFO - Skipping chunk 75 (7500000 rows) due to checkpoint
+2025-10-24 05:26:47,978 - INFO - Skipping chunk 76 (7600000 rows) due to checkpoint
+2025-10-24 05:26:49,077 - INFO - Skipping chunk 77 (7700000 rows) due to checkpoint
+2025-10-24 05:26:50,153 - INFO - Skipping chunk 78 (7800000 rows) due to checkpoint
+2025-10-24 05:26:51,265 - INFO - Skipping chunk 79 (7900000 rows) due to checkpoint
+2025-10-24 05:26:52,364 - INFO - Skipping chunk 80 (8000000 rows) due to checkpoint
+2025-10-24 05:26:53,480 - INFO - Skipping chunk 81 (8100000 rows) due to checkpoint
+2025-10-24 05:26:54,615 - INFO - Skipping chunk 82 (8200000 rows) due to checkpoint
+2025-10-24 05:26:55,813 - INFO - Skipping chunk 83 (8300000 rows) due to checkpoint
+2025-10-24 05:26:56,915 - INFO - Skipping chunk 84 (8400000 rows) due to checkpoint
+2025-10-24 05:26:57,971 - INFO - Skipping chunk 85 (8500000 rows) due to checkpoint
+2025-10-24 05:26:59,056 - INFO - Skipping chunk 86 (8600000 rows) due to checkpoint
+2025-10-24 05:27:00,369 - INFO - Skipping chunk 87 (8700000 rows) due to checkpoint
+2025-10-24 05:27:01,686 - INFO - Skipping chunk 88 (8800000 rows) due to checkpoint
+2025-10-24 05:27:02,816 - INFO - Skipping chunk 89 (8900000 rows) due to checkpoint
+2025-10-24 05:27:03,925 - INFO - Skipping chunk 90 (9000000 rows) due to checkpoint
+2025-10-24 05:27:04,982 - INFO - Skipping chunk 91 (9100000 rows) due to checkpoint
+2025-10-24 05:27:06,066 - INFO - Skipping chunk 92 (9200000 rows) due to checkpoint
+2025-10-24 05:27:07,126 - INFO - Skipping chunk 93 (9300000 rows) due to checkpoint
+2025-10-24 05:27:08,253 - INFO - Skipping chunk 94 (9400000 rows) due to checkpoint
+2025-10-24 05:27:09,412 - INFO - Skipping chunk 95 (9500000 rows) due to checkpoint
+2025-10-24 05:27:10,528 - INFO - Skipping chunk 96 (9600000 rows) due to checkpoint
+2025-10-24 05:27:11,686 - INFO - Skipping chunk 97 (9700000 rows) due to checkpoint
+2025-10-24 05:27:12,807 - INFO - Skipping chunk 98 (9800000 rows) due to checkpoint
+2025-10-24 05:27:13,868 - INFO - Skipping chunk 99 (9900000 rows) due to checkpoint
+2025-10-24 05:27:14,968 - INFO - Skipping chunk 100 (10000000 rows) due to checkpoint
+2025-10-24 05:27:16,026 - INFO - Skipping chunk 101 (10100000 rows) due to checkpoint
+2025-10-24 05:27:17,079 - INFO - Skipping chunk 102 (10200000 rows) due to checkpoint
+2025-10-24 05:27:18,120 - INFO - Skipping chunk 103 (10300000 rows) due to checkpoint
+2025-10-24 05:27:19,189 - INFO - Skipping chunk 104 (10400000 rows) due to checkpoint
+2025-10-24 05:27:20,228 - INFO - Skipping chunk 105 (10500000 rows) due to checkpoint
+2025-10-24 05:27:21,271 - INFO - Skipping chunk 106 (10600000 rows) due to checkpoint
+2025-10-24 05:27:22,340 - INFO - Skipping chunk 107 (10700000 rows) due to checkpoint
+2025-10-24 05:27:23,411 - INFO - Skipping chunk 108 (10800000 rows) due to checkpoint
+2025-10-24 05:27:24,468 - INFO - Skipping chunk 109 (10900000 rows) due to checkpoint
+2025-10-24 05:27:25,655 - INFO - Skipping chunk 110 (11000000 rows) due to checkpoint
+2025-10-24 05:27:26,721 - INFO - Skipping chunk 111 (11100000 rows) due to checkpoint
+2025-10-24 05:27:27,845 - INFO - Skipping chunk 112 (11200000 rows) due to checkpoint
+2025-10-24 05:27:28,886 - INFO - Skipping chunk 113 (11300000 rows) due to checkpoint
+2025-10-24 05:27:29,943 - INFO - Skipping chunk 114 (11400000 rows) due to checkpoint
+2025-10-24 05:27:30,912 - INFO - Skipping chunk 115 (11500000 rows) due to checkpoint
+2025-10-24 05:27:32,088 - INFO - Skipping chunk 116 (11600000 rows) due to checkpoint
+2025-10-24 05:27:33,134 - INFO - Skipping chunk 117 (11700000 rows) due to checkpoint
+2025-10-24 05:27:34,244 - INFO - Skipping chunk 118 (11800000 rows) due to checkpoint
+2025-10-24 05:27:35,489 - INFO - Skipping chunk 119 (11900000 rows) due to checkpoint
+2025-10-24 05:27:36,702 - INFO - Skipping chunk 120 (12000000 rows) due to checkpoint
+2025-10-24 05:27:37,847 - INFO - Skipping chunk 121 (12100000 rows) due to checkpoint
+2025-10-24 05:27:38,978 - INFO - Skipping chunk 122 (12200000 rows) due to checkpoint
+2025-10-24 05:27:40,086 - INFO - Skipping chunk 123 (12300000 rows) due to checkpoint
+2025-10-24 05:27:41,161 - INFO - Skipping chunk 124 (12400000 rows) due to checkpoint
+2025-10-24 05:27:42,269 - INFO - Skipping chunk 125 (12500000 rows) due to checkpoint
+2025-10-24 05:27:43,421 - INFO - Skipping chunk 126 (12600000 rows) due to checkpoint
+2025-10-24 05:27:44,409 - INFO - Skipping chunk 127 (12691941 rows) due to checkpoint
+2025-10-24 05:27:44,415 - INFO - Processed 0 case files from CSV (rows read: 12691941)
+2025-10-24 05:27:44,526 - INFO - Saved 0 case files to database
+2025-10-24 05:27:44,527 - INFO - Successfully processed and saved 0 case files
+2025-10-24 05:29:55,072 - INFO - Processing sample data with new structured approach
+2025-10-24 05:29:55,254 - INFO - Database connection successful
+2025-10-24 05:29:55,255 - INFO - Processing case file CSV: uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv
+2025-10-24 05:29:55,278 - INFO - CSV columns for uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv: ['serial_no', 'abandon_dt', 'amend_reg_dt', 'amend_lb_for_app_in', 'amend_lb_for_reg_in', 'amend_lb_itu_in', 'amend_lb_use_in', 'reg_cancel_cd', 'reg_cancel_dt', 'cancel_pend_in', 'cert_mark_in', 'chg_reg_in', 'coll_memb_mark_in', 'coll_serv_mark_in', 'coll_trade_mark_in', 'draw_color_cur_in', 'draw_color_file_in', 'concur_use_in', 'concur_use_pend_in', 'file_location', 'draw_3d_cur_in', 'draw_3d_file_in', 'exm_attorney_name', 'lb_use_file_in', 'lb_for_app_cur_in', 'lb_for_reg_cur_in', 'lb_intl_reg_cur_in', 'lb_for_app_file_in', 'lb_for_reg_file_in', 'lb_intl_reg_file_in', 'lb_none_cur_in', 'filing_dt', 'for_priority_in', 'lb_itu_cur_in', 'lb_itu_file_in', 'interfer_pend_in', 'exm_office_cd', 'file_location_dt', 'mark_draw_cd', 'mark_id_char', 'opposit_pend_in', 'amend_principal_in', 'concur_use_pub_in', 'publication_dt', 'registration_dt', 'renewal_dt', 'renewal_file_in', 'repub_12c_dt', 'repub_12c_in', 'incontest_ack_in', 'incontest_file_in', 'acq_dist_in', 'acq_dist_part_in', 'use_afdv_acc_in', 'use_afdv_file_in', 'use_afdv_par_acc_in', 'serv_mark_in', 'std_char_claim_in', 'cfh_status_cd', 'cfh_status_dt', 'amend_supp_reg_in', 'supp_reg_in', 'trade_mark_in', 'lb_use_cur_in', 'lb_none_file_in', 'ir_auto_reg_dt', 'ir_first_refus_in', 'ir_death_dt', 'ir_publication_dt', 'ir_registration_dt', 'ir_registration_no', 'ir_renewal_dt', 'ir_status_cd', 'ir_status_dt', 'ir_priority_dt', 'ir_priority_in', 'related_other_in', 'registration_no', 'tad_file_id']
+2025-10-24 05:29:55,304 - INFO - First CSV row preview for uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv: {'serial_no': 60000001, 'abandon_dt': nan, 'amend_reg_dt': nan, 'amend_lb_for_app_in': 0, 'amend_lb_for_reg_in': 0, 'amend_lb_itu_in': 0, 'amend_lb_use_in': 0, 'reg_cancel_cd': nan, 'reg_cancel_dt': nan, 'cancel_pend_in': 0, 'cert_mark_in': 0, 'chg_reg_in': 0, 'coll_memb_mark_in': 0, 'coll_serv_mark_in': 0, 'coll_trade_mark_in': 0, 'draw_color_cur_in': 0, 'draw_color_file_in': 0, 'concur_use_in': 0, 'concur_use_pend_in': 0, 'file_location': nan, 'draw_3d_cur_in': 0, 'draw_3d_file_in': 0, 'exm_attorney_name': nan, 'lb_use_file_in': 0, 'lb_for_app_cur_in': 0, 'lb_for_reg_cur_in': 0, 'lb_intl_reg_cur_in': 0, 'lb_for_app_file_in': 0, 'lb_for_reg_file_in': 0, 'lb_intl_reg_file_in': 0, 'lb_none_cur_in': 0, 'filing_dt': nan, 'for_priority_in': 0, 'lb_itu_cur_in': 0, 'lb_itu_file_in': 0, 'interfer_pend_in': 0, 'exm_office_cd': nan, 'file_location_dt': nan, 'mark_draw_cd': nan, 'mark_id_char': nan, 'opposit_pend_in': 0, 'amend_principal_in': 0, 'concur_use_pub_in': 0, 'publication_dt': nan, 'registration_dt': '1870-10-25', 'renewal_dt': nan, 'renewal_file_in': 0, 'repub_12c_dt': nan, 'repub_12c_in': 0, 'incontest_ack_in': 0, 'incontest_file_in': 0, 'acq_dist_in': 0, 'acq_dist_part_in': 0, 'use_afdv_acc_in': 0, 'use_afdv_file_in': 0, 'use_afdv_par_acc_in': 0, 'serv_mark_in': 0, 'std_char_claim_in': 0, 'cfh_status_cd': 626, 'cfh_status_dt': '2005-10-11', 'amend_supp_reg_in': 0, 'supp_reg_in': 0, 'trade_mark_in': 0, 'lb_use_cur_in': 0, 'lb_none_file_in': 0, 'ir_auto_reg_dt': nan, 'ir_first_refus_in': nan, 'ir_death_dt': nan, 'ir_publication_dt': nan, 'ir_registration_dt': nan, 'ir_registration_no': nan, 'ir_renewal_dt': nan, 'ir_status_cd': nan, 'ir_status_dt': nan, 'ir_priority_dt': nan, 'ir_priority_in': nan, 'related_other_in': nan, 'registration_no': 1, 'tad_file_id': 1}
+2025-10-24 05:29:55,312 - INFO - First CSV dtypes: {'serial_no': dtype('int64'), 'abandon_dt': dtype('float64'), 'amend_reg_dt': dtype('float64'), 'amend_lb_for_app_in': dtype('int64'), 'amend_lb_for_reg_in': dtype('int64'), 'amend_lb_itu_in': dtype('int64'), 'amend_lb_use_in': dtype('int64'), 'reg_cancel_cd': dtype('float64'), 'reg_cancel_dt': dtype('float64'), 'cancel_pend_in': dtype('int64'), 'cert_mark_in': dtype('int64'), 'chg_reg_in': dtype('int64'), 'coll_memb_mark_in': dtype('int64'), 'coll_serv_mark_in': dtype('int64'), 'coll_trade_mark_in': dtype('int64'), 'draw_color_cur_in': dtype('int64'), 'draw_color_file_in': dtype('int64'), 'concur_use_in': dtype('int64'), 'concur_use_pend_in': dtype('int64'), 'file_location': dtype('float64'), 'draw_3d_cur_in': dtype('int64'), 'draw_3d_file_in': dtype('int64'), 'exm_attorney_name': dtype('float64'), 'lb_use_file_in': dtype('int64'), 'lb_for_app_cur_in': dtype('int64'), 'lb_for_reg_cur_in': dtype('int64'), 'lb_intl_reg_cur_in': dtype('int64'), 'lb_for_app_file_in': dtype('int64'), 'lb_for_reg_file_in': dtype('int64'), 'lb_intl_reg_file_in': dtype('int64'), 'lb_none_cur_in': dtype('int64'), 'filing_dt': dtype('float64'), 'for_priority_in': dtype('int64'), 'lb_itu_cur_in': dtype('int64'), 'lb_itu_file_in': dtype('int64'), 'interfer_pend_in': dtype('int64'), 'exm_office_cd': dtype('float64'), 'file_location_dt': dtype('float64'), 'mark_draw_cd': dtype('float64'), 'mark_id_char': dtype('float64'), 'opposit_pend_in': dtype('int64'), 'amend_principal_in': dtype('int64'), 'concur_use_pub_in': dtype('int64'), 'publication_dt': dtype('float64'), 'registration_dt': dtype('O'), 'renewal_dt': dtype('float64'), 'renewal_file_in': dtype('int64'), 'repub_12c_dt': dtype('float64'), 'repub_12c_in': dtype('int64'), 'incontest_ack_in': dtype('int64'), 'incontest_file_in': dtype('int64'), 'acq_dist_in': dtype('int64'), 'acq_dist_part_in': dtype('int64'), 'use_afdv_acc_in': dtype('int64'), 'use_afdv_file_in': dtype('int64'), 'use_afdv_par_acc_in': dtype('int64'), 'serv_mark_in': dtype('int64'), 'std_char_claim_in': dtype('int64'), 'cfh_status_cd': dtype('int64'), 'cfh_status_dt': dtype('O'), 'amend_supp_reg_in': dtype('int64'), 'supp_reg_in': dtype('int64'), 'trade_mark_in': dtype('int64'), 'lb_use_cur_in': dtype('int64'), 'lb_none_file_in': dtype('int64'), 'ir_auto_reg_dt': dtype('float64'), 'ir_first_refus_in': dtype('float64'), 'ir_death_dt': dtype('float64'), 'ir_publication_dt': dtype('float64'), 'ir_registration_dt': dtype('float64'), 'ir_registration_no': dtype('float64'), 'ir_renewal_dt': dtype('float64'), 'ir_status_cd': dtype('float64'), 'ir_status_dt': dtype('float64'), 'ir_priority_dt': dtype('float64'), 'ir_priority_in': dtype('float64'), 'related_other_in': dtype('float64'), 'registration_no': dtype('int64'), 'tad_file_id': dtype('int64')}
+2025-10-24 05:31:34,736 - INFO - Processed JSONL preview for uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv: first_record={'serial_number': '60000001', 'registration_number': '1', 'filing_date': None, 'registration_date': '1870-10-25', 'status_code': None, 'status_date': None, 'mark_identification': None, 'mark_drawing_code': None, 'abandon_dt': None, 'amend_reg_dt': None, 'amend_lb_for_app_in': False, 'amend_lb_for_reg_in': False, 'amend_lb_itu_in': False, 'amend_lb_use_in': False, 'reg_cancel_cd': None, 'reg_cancel_dt': None, 'cancel_pend_in': False, 'cert_mark_in': False, 'chg_reg_in': False, 'coll_memb_mark_in': False, 'coll_serv_mark_in': False, 'coll_trade_mark_in': False, 'draw_color_cur_in': False, 'draw_color_file_in': False, 'concur_use_in': False, 'concur_use_pend_in': False, 'draw_3d_cur_in': False, 'draw_3d_file_in': False, 'exm_attorney_name': None, 'lb_use_file_in': False, 'lb_for_app_cur_in': False, 'lb_for_reg_cur_in': False, 'lb_intl_reg_cur_in': False, 'lb_for_app_file_in': False, 'lb_for_reg_file_in': False, 'lb_intl_reg_file_in': False, 'lb_none_cur_in': False, 'for_priority_in': False, 'lb_itu_cur_in': False, 'lb_itu_file_in': False, 'interfer_pend_in': False, 'exm_office_cd': None, 'opposit_pend_in': False, 'amend_principal_in': False, 'concur_use_pub_in': False, 'publication_dt': None, 'renewal_dt': None, 'renewal_file_in': False, 'repub_12c_dt': None, 'repub_12c_in': False, 'incontest_ack_in': False, 'incontest_file_in': False, 'acq_dist_in': False, 'acq_dist_part_in': False, 'use_afdv_acc_in': False, 'use_afdv_file_in': False, 'use_afdv_par_acc_in': False, 'serv_mark_in': False, 'std_char_claim_in': False, 'cfh_status_cd': 626, 'cfh_status_dt': '2005-10-11', 'amend_supp_reg_in': False, 'supp_reg_in': False, 'trade_mark_in': False, 'lb_use_cur_in': False, 'lb_none_file_in': False, 'ir_auto_reg_dt': None, 'ir_first_refus_in': None, 'ir_death_dt': None, 'ir_publication_dt': None, 'ir_registration_dt': None, 'ir_registration_no': None, 'ir_renewal_dt': None, 'ir_status_cd': None, 'ir_status_dt': None, 'ir_priority_dt': None, 'ir_priority_in': None, 'related_other_in': None, 'tad_file_id': 1, 'data_source': 'TRCFECO2/case_file.csv.zip [CSV]'}, total_processed_lines=12691941
+2025-10-24 05:31:35,643 - INFO - Skipping chunk 1 (100000 rows) due to checkpoint
+2025-10-24 05:31:36,437 - INFO - Skipping chunk 2 (200000 rows) due to checkpoint
+2025-10-24 05:31:37,249 - INFO - Skipping chunk 3 (300000 rows) due to checkpoint
+2025-10-24 05:31:38,039 - INFO - Skipping chunk 4 (400000 rows) due to checkpoint
+2025-10-24 05:31:38,825 - INFO - Skipping chunk 5 (500000 rows) due to checkpoint
+2025-10-24 05:31:39,599 - INFO - Skipping chunk 6 (600000 rows) due to checkpoint
+2025-10-24 05:31:40,609 - INFO - Skipping chunk 7 (700000 rows) due to checkpoint
+2025-10-24 05:31:41,780 - INFO - Skipping chunk 8 (800000 rows) due to checkpoint
+2025-10-24 05:31:42,946 - INFO - Skipping chunk 9 (900000 rows) due to checkpoint
+2025-10-24 05:31:43,948 - INFO - Skipping chunk 10 (1000000 rows) due to checkpoint
+2025-10-24 05:31:44,968 - INFO - Skipping chunk 11 (1100000 rows) due to checkpoint
+2025-10-24 05:31:46,029 - INFO - Skipping chunk 12 (1200000 rows) due to checkpoint
+2025-10-24 05:31:47,113 - INFO - Skipping chunk 13 (1300000 rows) due to checkpoint
+2025-10-24 05:31:48,191 - INFO - Skipping chunk 14 (1400000 rows) due to checkpoint
+2025-10-24 05:31:49,265 - INFO - Skipping chunk 15 (1500000 rows) due to checkpoint
+2025-10-24 05:31:50,404 - INFO - Skipping chunk 16 (1600000 rows) due to checkpoint
+2025-10-24 05:31:51,434 - INFO - Skipping chunk 17 (1700000 rows) due to checkpoint
+2025-10-24 05:31:52,548 - INFO - Skipping chunk 18 (1800000 rows) due to checkpoint
+2025-10-24 05:31:53,754 - INFO - Skipping chunk 19 (1900000 rows) due to checkpoint
+2025-10-24 05:31:54,883 - INFO - Skipping chunk 20 (2000000 rows) due to checkpoint
+2025-10-24 05:31:56,033 - INFO - Skipping chunk 21 (2100000 rows) due to checkpoint
+2025-10-24 05:31:57,184 - INFO - Skipping chunk 22 (2200000 rows) due to checkpoint
+2025-10-24 05:31:58,285 - INFO - Skipping chunk 23 (2300000 rows) due to checkpoint
+2025-10-24 05:31:59,562 - INFO - Skipping chunk 24 (2400000 rows) due to checkpoint
+2025-10-24 05:32:00,775 - INFO - Skipping chunk 25 (2500000 rows) due to checkpoint
+2025-10-24 05:32:01,924 - INFO - Skipping chunk 26 (2600000 rows) due to checkpoint
+2025-10-24 05:32:03,141 - INFO - Skipping chunk 27 (2700000 rows) due to checkpoint
+2025-10-24 05:32:04,281 - INFO - Skipping chunk 28 (2800000 rows) due to checkpoint
+2025-10-24 05:32:05,762 - INFO - Skipping chunk 29 (2900000 rows) due to checkpoint
+2025-10-24 05:32:07,197 - INFO - Skipping chunk 30 (3000000 rows) due to checkpoint
+2025-10-24 05:32:08,567 - INFO - Skipping chunk 31 (3100000 rows) due to checkpoint
+2025-10-24 05:32:09,813 - INFO - Skipping chunk 32 (3200000 rows) due to checkpoint
+2025-10-24 05:32:11,126 - INFO - Skipping chunk 33 (3300000 rows) due to checkpoint
+2025-10-24 05:32:12,515 - INFO - Skipping chunk 34 (3400000 rows) due to checkpoint
+2025-10-24 05:32:13,676 - INFO - Skipping chunk 35 (3500000 rows) due to checkpoint
+2025-10-24 05:32:14,845 - INFO - Skipping chunk 36 (3600000 rows) due to checkpoint
+2025-10-24 05:32:16,211 - INFO - Skipping chunk 37 (3700000 rows) due to checkpoint
+2025-10-24 05:32:18,434 - INFO - Skipping chunk 38 (3800000 rows) due to checkpoint
+2025-10-24 05:32:19,513 - INFO - Skipping chunk 39 (3900000 rows) due to checkpoint
+2025-10-24 05:32:20,658 - INFO - Skipping chunk 40 (4000000 rows) due to checkpoint
+2025-10-24 05:32:21,923 - INFO - Skipping chunk 41 (4100000 rows) due to checkpoint
+2025-10-24 05:32:23,275 - INFO - Skipping chunk 42 (4200000 rows) due to checkpoint
+2025-10-24 05:32:24,422 - INFO - Skipping chunk 43 (4300000 rows) due to checkpoint
+2025-10-24 05:32:25,687 - INFO - Skipping chunk 44 (4400000 rows) due to checkpoint
+2025-10-24 05:32:26,926 - INFO - Skipping chunk 45 (4500000 rows) due to checkpoint
+2025-10-24 05:32:28,287 - INFO - Skipping chunk 46 (4600000 rows) due to checkpoint
+2025-10-24 05:32:29,520 - INFO - Skipping chunk 47 (4700000 rows) due to checkpoint
+2025-10-24 05:32:30,856 - INFO - Skipping chunk 48 (4800000 rows) due to checkpoint
+2025-10-24 05:32:32,012 - INFO - Skipping chunk 49 (4900000 rows) due to checkpoint
+2025-10-24 05:32:33,287 - INFO - Skipping chunk 50 (5000000 rows) due to checkpoint
+2025-10-24 05:32:34,330 - INFO - Skipping chunk 51 (5100000 rows) due to checkpoint
+2025-10-24 05:32:35,408 - INFO - Skipping chunk 52 (5200000 rows) due to checkpoint
+2025-10-24 05:32:36,532 - INFO - Skipping chunk 53 (5300000 rows) due to checkpoint
+2025-10-24 05:32:37,653 - INFO - Skipping chunk 54 (5400000 rows) due to checkpoint
+2025-10-24 05:32:38,784 - INFO - Skipping chunk 55 (5500000 rows) due to checkpoint
+2025-10-24 05:32:39,934 - INFO - Skipping chunk 56 (5600000 rows) due to checkpoint
+2025-10-24 05:32:41,183 - INFO - Skipping chunk 57 (5700000 rows) due to checkpoint
+2025-10-24 05:32:43,416 - INFO - Skipping chunk 58 (5800000 rows) due to checkpoint
+2025-10-24 05:32:44,533 - INFO - Skipping chunk 59 (5900000 rows) due to checkpoint
+2025-10-24 05:32:46,187 - INFO - Skipping chunk 60 (6000000 rows) due to checkpoint
+2025-10-24 05:32:47,656 - INFO - Skipping chunk 61 (6100000 rows) due to checkpoint
+2025-10-24 05:32:49,047 - INFO - Skipping chunk 62 (6200000 rows) due to checkpoint
+2025-10-24 05:32:51,157 - INFO - Skipping chunk 63 (6300000 rows) due to checkpoint
+2025-10-24 05:32:52,869 - INFO - Skipping chunk 64 (6400000 rows) due to checkpoint
+2025-10-24 05:32:54,316 - INFO - Skipping chunk 65 (6500000 rows) due to checkpoint
+2025-10-24 05:32:55,614 - INFO - Skipping chunk 66 (6600000 rows) due to checkpoint
+2025-10-24 05:32:56,975 - INFO - Skipping chunk 67 (6700000 rows) due to checkpoint
+2025-10-24 05:32:58,175 - INFO - Skipping chunk 68 (6800000 rows) due to checkpoint
+2025-10-24 05:32:59,233 - INFO - Skipping chunk 69 (6900000 rows) due to checkpoint
+2025-10-24 05:33:00,324 - INFO - Skipping chunk 70 (7000000 rows) due to checkpoint
+2025-10-24 05:33:01,370 - INFO - Skipping chunk 71 (7100000 rows) due to checkpoint
+2025-10-24 05:33:02,478 - INFO - Skipping chunk 72 (7200000 rows) due to checkpoint
+2025-10-24 05:33:03,631 - INFO - Skipping chunk 73 (7300000 rows) due to checkpoint
+2025-10-24 05:33:04,771 - INFO - Skipping chunk 74 (7400000 rows) due to checkpoint
+2025-10-24 05:33:05,900 - INFO - Skipping chunk 75 (7500000 rows) due to checkpoint
+2025-10-24 05:33:07,081 - INFO - Skipping chunk 76 (7600000 rows) due to checkpoint
+2025-10-24 05:33:08,416 - INFO - Skipping chunk 77 (7700000 rows) due to checkpoint
+2025-10-24 05:33:10,143 - INFO - Skipping chunk 78 (7800000 rows) due to checkpoint
+2025-10-24 05:33:11,501 - INFO - Skipping chunk 79 (7900000 rows) due to checkpoint
+2025-10-24 05:33:12,932 - INFO - Skipping chunk 80 (8000000 rows) due to checkpoint
+2025-10-24 05:33:13,982 - INFO - Skipping chunk 81 (8100000 rows) due to checkpoint
+2025-10-24 05:33:15,189 - INFO - Skipping chunk 82 (8200000 rows) due to checkpoint
+2025-10-24 05:33:16,394 - INFO - Skipping chunk 83 (8300000 rows) due to checkpoint
+2025-10-24 05:33:17,690 - INFO - Skipping chunk 84 (8400000 rows) due to checkpoint
+2025-10-24 05:33:18,832 - INFO - Skipping chunk 85 (8500000 rows) due to checkpoint
+2025-10-24 05:33:20,124 - INFO - Skipping chunk 86 (8600000 rows) due to checkpoint
+2025-10-24 05:33:21,272 - INFO - Skipping chunk 87 (8700000 rows) due to checkpoint
+2025-10-24 05:33:22,457 - INFO - Skipping chunk 88 (8800000 rows) due to checkpoint
+2025-10-24 05:33:23,482 - INFO - Skipping chunk 89 (8900000 rows) due to checkpoint
+2025-10-24 05:33:24,558 - INFO - Skipping chunk 90 (9000000 rows) due to checkpoint
+2025-10-24 05:33:25,833 - INFO - Skipping chunk 91 (9100000 rows) due to checkpoint
+2025-10-24 05:33:26,886 - INFO - Skipping chunk 92 (9200000 rows) due to checkpoint
+2025-10-24 05:33:27,997 - INFO - Skipping chunk 93 (9300000 rows) due to checkpoint
+2025-10-24 05:33:29,078 - INFO - Skipping chunk 94 (9400000 rows) due to checkpoint
+2025-10-24 05:33:30,274 - INFO - Skipping chunk 95 (9500000 rows) due to checkpoint
+2025-10-24 05:33:31,410 - INFO - Skipping chunk 96 (9600000 rows) due to checkpoint
+2025-10-24 05:33:32,611 - INFO - Skipping chunk 97 (9700000 rows) due to checkpoint
+2025-10-24 05:33:33,699 - INFO - Skipping chunk 98 (9800000 rows) due to checkpoint
+2025-10-24 05:33:34,768 - INFO - Skipping chunk 99 (9900000 rows) due to checkpoint
+2025-10-24 05:33:35,821 - INFO - Skipping chunk 100 (10000000 rows) due to checkpoint
+2025-10-24 05:33:36,846 - INFO - Skipping chunk 101 (10100000 rows) due to checkpoint
+2025-10-24 05:33:37,885 - INFO - Skipping chunk 102 (10200000 rows) due to checkpoint
+2025-10-24 05:33:38,968 - INFO - Skipping chunk 103 (10300000 rows) due to checkpoint
+2025-10-24 05:33:40,031 - INFO - Skipping chunk 104 (10400000 rows) due to checkpoint
+2025-10-24 05:33:41,099 - INFO - Skipping chunk 105 (10500000 rows) due to checkpoint
+2025-10-24 05:33:42,219 - INFO - Skipping chunk 106 (10600000 rows) due to checkpoint
+2025-10-24 05:33:43,303 - INFO - Skipping chunk 107 (10700000 rows) due to checkpoint
+2025-10-24 05:33:44,623 - INFO - Skipping chunk 108 (10800000 rows) due to checkpoint
+2025-10-24 05:33:45,879 - INFO - Skipping chunk 109 (10900000 rows) due to checkpoint
+2025-10-24 05:33:46,972 - INFO - Skipping chunk 110 (11000000 rows) due to checkpoint
+2025-10-24 05:33:48,064 - INFO - Skipping chunk 111 (11100000 rows) due to checkpoint
+2025-10-24 05:33:49,283 - INFO - Skipping chunk 112 (11200000 rows) due to checkpoint
+2025-10-24 05:33:50,714 - INFO - Skipping chunk 113 (11300000 rows) due to checkpoint
+2025-10-24 05:33:51,837 - INFO - Skipping chunk 114 (11400000 rows) due to checkpoint
+2025-10-24 05:33:53,317 - INFO - Skipping chunk 115 (11500000 rows) due to checkpoint
+2025-10-24 05:33:54,967 - INFO - Skipping chunk 116 (11600000 rows) due to checkpoint
+2025-10-24 05:33:56,103 - INFO - Skipping chunk 117 (11700000 rows) due to checkpoint
+2025-10-24 05:33:57,196 - INFO - Skipping chunk 118 (11800000 rows) due to checkpoint
+2025-10-24 05:33:58,314 - INFO - Skipping chunk 119 (11900000 rows) due to checkpoint
+2025-10-24 05:33:59,507 - INFO - Skipping chunk 120 (12000000 rows) due to checkpoint
+2025-10-24 05:34:00,595 - INFO - Skipping chunk 121 (12100000 rows) due to checkpoint
+2025-10-24 05:34:01,692 - INFO - Skipping chunk 122 (12200000 rows) due to checkpoint
+2025-10-24 05:34:02,866 - INFO - Skipping chunk 123 (12300000 rows) due to checkpoint
+2025-10-24 05:34:04,165 - INFO - Skipping chunk 124 (12400000 rows) due to checkpoint
+2025-10-24 05:34:05,302 - INFO - Skipping chunk 125 (12500000 rows) due to checkpoint
+2025-10-24 05:34:07,694 - INFO - Skipping chunk 126 (12600000 rows) due to checkpoint
+2025-10-24 05:34:09,145 - INFO - Skipping chunk 127 (12691941 rows) due to checkpoint
+2025-10-24 05:34:09,151 - INFO - Processed 0 case files from CSV (rows read: 12691941)
+2025-10-24 05:34:09,230 - INFO - Saved 0 case files to database
+2025-10-24 05:34:09,231 - INFO - Successfully processed and saved 0 case files
+2025-10-24 05:37:07,133 - INFO - Processing sample data with new structured approach
+2025-10-24 05:37:07,239 - INFO - Database connection successful
+2025-10-24 05:37:07,239 - INFO - Processing case file CSV: uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv
+2025-10-24 05:37:07,258 - INFO - CSV columns for uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv: ['serial_no', 'abandon_dt', 'amend_reg_dt', 'amend_lb_for_app_in', 'amend_lb_for_reg_in', 'amend_lb_itu_in', 'amend_lb_use_in', 'reg_cancel_cd', 'reg_cancel_dt', 'cancel_pend_in', 'cert_mark_in', 'chg_reg_in', 'coll_memb_mark_in', 'coll_serv_mark_in', 'coll_trade_mark_in', 'draw_color_cur_in', 'draw_color_file_in', 'concur_use_in', 'concur_use_pend_in', 'file_location', 'draw_3d_cur_in', 'draw_3d_file_in', 'exm_attorney_name', 'lb_use_file_in', 'lb_for_app_cur_in', 'lb_for_reg_cur_in', 'lb_intl_reg_cur_in', 'lb_for_app_file_in', 'lb_for_reg_file_in', 'lb_intl_reg_file_in', 'lb_none_cur_in', 'filing_dt', 'for_priority_in', 'lb_itu_cur_in', 'lb_itu_file_in', 'interfer_pend_in', 'exm_office_cd', 'file_location_dt', 'mark_draw_cd', 'mark_id_char', 'opposit_pend_in', 'amend_principal_in', 'concur_use_pub_in', 'publication_dt', 'registration_dt', 'renewal_dt', 'renewal_file_in', 'repub_12c_dt', 'repub_12c_in', 'incontest_ack_in', 'incontest_file_in', 'acq_dist_in', 'acq_dist_part_in', 'use_afdv_acc_in', 'use_afdv_file_in', 'use_afdv_par_acc_in', 'serv_mark_in', 'std_char_claim_in', 'cfh_status_cd', 'cfh_status_dt', 'amend_supp_reg_in', 'supp_reg_in', 'trade_mark_in', 'lb_use_cur_in', 'lb_none_file_in', 'ir_auto_reg_dt', 'ir_first_refus_in', 'ir_death_dt', 'ir_publication_dt', 'ir_registration_dt', 'ir_registration_no', 'ir_renewal_dt', 'ir_status_cd', 'ir_status_dt', 'ir_priority_dt', 'ir_priority_in', 'related_other_in', 'registration_no', 'tad_file_id']
+2025-10-24 05:37:07,284 - INFO - First CSV row preview for uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv: {'serial_no': 60000001, 'abandon_dt': nan, 'amend_reg_dt': nan, 'amend_lb_for_app_in': 0, 'amend_lb_for_reg_in': 0, 'amend_lb_itu_in': 0, 'amend_lb_use_in': 0, 'reg_cancel_cd': nan, 'reg_cancel_dt': nan, 'cancel_pend_in': 0, 'cert_mark_in': 0, 'chg_reg_in': 0, 'coll_memb_mark_in': 0, 'coll_serv_mark_in': 0, 'coll_trade_mark_in': 0, 'draw_color_cur_in': 0, 'draw_color_file_in': 0, 'concur_use_in': 0, 'concur_use_pend_in': 0, 'file_location': nan, 'draw_3d_cur_in': 0, 'draw_3d_file_in': 0, 'exm_attorney_name': nan, 'lb_use_file_in': 0, 'lb_for_app_cur_in': 0, 'lb_for_reg_cur_in': 0, 'lb_intl_reg_cur_in': 0, 'lb_for_app_file_in': 0, 'lb_for_reg_file_in': 0, 'lb_intl_reg_file_in': 0, 'lb_none_cur_in': 0, 'filing_dt': nan, 'for_priority_in': 0, 'lb_itu_cur_in': 0, 'lb_itu_file_in': 0, 'interfer_pend_in': 0, 'exm_office_cd': nan, 'file_location_dt': nan, 'mark_draw_cd': nan, 'mark_id_char': nan, 'opposit_pend_in': 0, 'amend_principal_in': 0, 'concur_use_pub_in': 0, 'publication_dt': nan, 'registration_dt': '1870-10-25', 'renewal_dt': nan, 'renewal_file_in': 0, 'repub_12c_dt': nan, 'repub_12c_in': 0, 'incontest_ack_in': 0, 'incontest_file_in': 0, 'acq_dist_in': 0, 'acq_dist_part_in': 0, 'use_afdv_acc_in': 0, 'use_afdv_file_in': 0, 'use_afdv_par_acc_in': 0, 'serv_mark_in': 0, 'std_char_claim_in': 0, 'cfh_status_cd': 626, 'cfh_status_dt': '2005-10-11', 'amend_supp_reg_in': 0, 'supp_reg_in': 0, 'trade_mark_in': 0, 'lb_use_cur_in': 0, 'lb_none_file_in': 0, 'ir_auto_reg_dt': nan, 'ir_first_refus_in': nan, 'ir_death_dt': nan, 'ir_publication_dt': nan, 'ir_registration_dt': nan, 'ir_registration_no': nan, 'ir_renewal_dt': nan, 'ir_status_cd': nan, 'ir_status_dt': nan, 'ir_priority_dt': nan, 'ir_priority_in': nan, 'related_other_in': nan, 'registration_no': 1, 'tad_file_id': 1}
+2025-10-24 05:37:07,288 - INFO - First CSV dtypes: {'serial_no': dtype('int64'), 'abandon_dt': dtype('float64'), 'amend_reg_dt': dtype('float64'), 'amend_lb_for_app_in': dtype('int64'), 'amend_lb_for_reg_in': dtype('int64'), 'amend_lb_itu_in': dtype('int64'), 'amend_lb_use_in': dtype('int64'), 'reg_cancel_cd': dtype('float64'), 'reg_cancel_dt': dtype('float64'), 'cancel_pend_in': dtype('int64'), 'cert_mark_in': dtype('int64'), 'chg_reg_in': dtype('int64'), 'coll_memb_mark_in': dtype('int64'), 'coll_serv_mark_in': dtype('int64'), 'coll_trade_mark_in': dtype('int64'), 'draw_color_cur_in': dtype('int64'), 'draw_color_file_in': dtype('int64'), 'concur_use_in': dtype('int64'), 'concur_use_pend_in': dtype('int64'), 'file_location': dtype('float64'), 'draw_3d_cur_in': dtype('int64'), 'draw_3d_file_in': dtype('int64'), 'exm_attorney_name': dtype('float64'), 'lb_use_file_in': dtype('int64'), 'lb_for_app_cur_in': dtype('int64'), 'lb_for_reg_cur_in': dtype('int64'), 'lb_intl_reg_cur_in': dtype('int64'), 'lb_for_app_file_in': dtype('int64'), 'lb_for_reg_file_in': dtype('int64'), 'lb_intl_reg_file_in': dtype('int64'), 'lb_none_cur_in': dtype('int64'), 'filing_dt': dtype('float64'), 'for_priority_in': dtype('int64'), 'lb_itu_cur_in': dtype('int64'), 'lb_itu_file_in': dtype('int64'), 'interfer_pend_in': dtype('int64'), 'exm_office_cd': dtype('float64'), 'file_location_dt': dtype('float64'), 'mark_draw_cd': dtype('float64'), 'mark_id_char': dtype('float64'), 'opposit_pend_in': dtype('int64'), 'amend_principal_in': dtype('int64'), 'concur_use_pub_in': dtype('int64'), 'publication_dt': dtype('float64'), 'registration_dt': dtype('O'), 'renewal_dt': dtype('float64'), 'renewal_file_in': dtype('int64'), 'repub_12c_dt': dtype('float64'), 'repub_12c_in': dtype('int64'), 'incontest_ack_in': dtype('int64'), 'incontest_file_in': dtype('int64'), 'acq_dist_in': dtype('int64'), 'acq_dist_part_in': dtype('int64'), 'use_afdv_acc_in': dtype('int64'), 'use_afdv_file_in': dtype('int64'), 'use_afdv_par_acc_in': dtype('int64'), 'serv_mark_in': dtype('int64'), 'std_char_claim_in': dtype('int64'), 'cfh_status_cd': dtype('int64'), 'cfh_status_dt': dtype('O'), 'amend_supp_reg_in': dtype('int64'), 'supp_reg_in': dtype('int64'), 'trade_mark_in': dtype('int64'), 'lb_use_cur_in': dtype('int64'), 'lb_none_file_in': dtype('int64'), 'ir_auto_reg_dt': dtype('float64'), 'ir_first_refus_in': dtype('float64'), 'ir_death_dt': dtype('float64'), 'ir_publication_dt': dtype('float64'), 'ir_registration_dt': dtype('float64'), 'ir_registration_no': dtype('float64'), 'ir_renewal_dt': dtype('float64'), 'ir_status_cd': dtype('float64'), 'ir_status_dt': dtype('float64'), 'ir_priority_dt': dtype('float64'), 'ir_priority_in': dtype('float64'), 'related_other_in': dtype('float64'), 'registration_no': dtype('int64'), 'tad_file_id': dtype('int64')}
+2025-10-24 05:38:45,702 - INFO - Processed JSONL preview for uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv: first_record={'serial_number': '60000001', 'registration_number': '1', 'filing_date': None, 'registration_date': '1870-10-25', 'status_code': None, 'status_date': None, 'mark_identification': None, 'mark_drawing_code': None, 'abandon_dt': None, 'amend_reg_dt': None, 'amend_lb_for_app_in': False, 'amend_lb_for_reg_in': False, 'amend_lb_itu_in': False, 'amend_lb_use_in': False, 'reg_cancel_cd': None, 'reg_cancel_dt': None, 'cancel_pend_in': False, 'cert_mark_in': False, 'chg_reg_in': False, 'coll_memb_mark_in': False, 'coll_serv_mark_in': False, 'coll_trade_mark_in': False, 'draw_color_cur_in': False, 'draw_color_file_in': False, 'concur_use_in': False, 'concur_use_pend_in': False, 'draw_3d_cur_in': False, 'draw_3d_file_in': False, 'exm_attorney_name': None, 'lb_use_file_in': False, 'lb_for_app_cur_in': False, 'lb_for_reg_cur_in': False, 'lb_intl_reg_cur_in': False, 'lb_for_app_file_in': False, 'lb_for_reg_file_in': False, 'lb_intl_reg_file_in': False, 'lb_none_cur_in': False, 'for_priority_in': False, 'lb_itu_cur_in': False, 'lb_itu_file_in': False, 'interfer_pend_in': False, 'exm_office_cd': None, 'opposit_pend_in': False, 'amend_principal_in': False, 'concur_use_pub_in': False, 'publication_dt': None, 'renewal_dt': None, 'renewal_file_in': False, 'repub_12c_dt': None, 'repub_12c_in': False, 'incontest_ack_in': False, 'incontest_file_in': False, 'acq_dist_in': False, 'acq_dist_part_in': False, 'use_afdv_acc_in': False, 'use_afdv_file_in': False, 'use_afdv_par_acc_in': False, 'serv_mark_in': False, 'std_char_claim_in': False, 'cfh_status_cd': 626, 'cfh_status_dt': '2005-10-11', 'amend_supp_reg_in': False, 'supp_reg_in': False, 'trade_mark_in': False, 'lb_use_cur_in': False, 'lb_none_file_in': False, 'ir_auto_reg_dt': None, 'ir_first_refus_in': None, 'ir_death_dt': None, 'ir_publication_dt': None, 'ir_registration_dt': None, 'ir_registration_no': None, 'ir_renewal_dt': None, 'ir_status_cd': None, 'ir_status_dt': None, 'ir_priority_dt': None, 'ir_priority_in': None, 'related_other_in': None, 'tad_file_id': 1, 'data_source': 'TRCFECO2/case_file.csv.zip [CSV]'}, total_processed_lines=12691941
+2025-10-24 05:38:46,501 - INFO - Skipping chunk 1 (100000 rows) due to checkpoint
+2025-10-24 05:38:47,310 - INFO - Skipping chunk 2 (200000 rows) due to checkpoint
+2025-10-24 05:38:48,189 - INFO - Skipping chunk 3 (300000 rows) due to checkpoint
+2025-10-24 05:38:49,073 - INFO - Skipping chunk 4 (400000 rows) due to checkpoint
+2025-10-24 05:38:49,953 - INFO - Skipping chunk 5 (500000 rows) due to checkpoint
+2025-10-24 05:38:50,715 - INFO - Skipping chunk 6 (600000 rows) due to checkpoint
+2025-10-24 05:38:51,691 - INFO - Skipping chunk 7 (700000 rows) due to checkpoint
+2025-10-24 05:38:52,662 - INFO - Skipping chunk 8 (800000 rows) due to checkpoint
+2025-10-24 05:38:53,611 - INFO - Skipping chunk 9 (900000 rows) due to checkpoint
+2025-10-24 05:38:54,779 - INFO - Skipping chunk 10 (1000000 rows) due to checkpoint
+2025-10-24 05:38:56,110 - INFO - Skipping chunk 11 (1100000 rows) due to checkpoint
+2025-10-24 05:38:57,237 - INFO - Skipping chunk 12 (1200000 rows) due to checkpoint
+2025-10-24 05:38:58,323 - INFO - Skipping chunk 13 (1300000 rows) due to checkpoint
+2025-10-24 05:38:59,489 - INFO - Skipping chunk 14 (1400000 rows) due to checkpoint
+2025-10-24 05:39:00,562 - INFO - Skipping chunk 15 (1500000 rows) due to checkpoint
+2025-10-24 05:39:01,611 - INFO - Skipping chunk 16 (1600000 rows) due to checkpoint
+2025-10-24 05:39:02,666 - INFO - Skipping chunk 17 (1700000 rows) due to checkpoint
+2025-10-24 05:39:03,682 - INFO - Skipping chunk 18 (1800000 rows) due to checkpoint
+2025-10-24 05:39:04,735 - INFO - Skipping chunk 19 (1900000 rows) due to checkpoint
+2025-10-24 05:39:05,790 - INFO - Skipping chunk 20 (2000000 rows) due to checkpoint
+2025-10-24 05:39:06,874 - INFO - Skipping chunk 21 (2100000 rows) due to checkpoint
+2025-10-24 05:39:07,959 - INFO - Skipping chunk 22 (2200000 rows) due to checkpoint
+2025-10-24 05:39:09,039 - INFO - Skipping chunk 23 (2300000 rows) due to checkpoint
+2025-10-24 05:39:10,094 - INFO - Skipping chunk 24 (2400000 rows) due to checkpoint
+2025-10-24 05:39:11,124 - INFO - Skipping chunk 25 (2500000 rows) due to checkpoint
+2025-10-24 05:39:12,169 - INFO - Skipping chunk 26 (2600000 rows) due to checkpoint
+2025-10-24 05:39:13,192 - INFO - Skipping chunk 27 (2700000 rows) due to checkpoint
+2025-10-24 05:39:14,243 - INFO - Skipping chunk 28 (2800000 rows) due to checkpoint
+2025-10-24 05:39:15,307 - INFO - Skipping chunk 29 (2900000 rows) due to checkpoint
+2025-10-24 05:39:16,351 - INFO - Skipping chunk 30 (3000000 rows) due to checkpoint
+2025-10-24 05:39:17,393 - INFO - Skipping chunk 31 (3100000 rows) due to checkpoint
+2025-10-24 05:39:18,417 - INFO - Skipping chunk 32 (3200000 rows) due to checkpoint
+2025-10-24 05:39:19,499 - INFO - Skipping chunk 33 (3300000 rows) due to checkpoint
+2025-10-24 05:39:20,531 - INFO - Skipping chunk 34 (3400000 rows) due to checkpoint
+2025-10-24 05:39:21,587 - INFO - Skipping chunk 35 (3500000 rows) due to checkpoint
+2025-10-24 05:39:22,620 - INFO - Skipping chunk 36 (3600000 rows) due to checkpoint
+2025-10-24 05:39:23,771 - INFO - Skipping chunk 37 (3700000 rows) due to checkpoint
+2025-10-24 05:39:24,901 - INFO - Skipping chunk 38 (3800000 rows) due to checkpoint
+2025-10-24 05:39:26,085 - INFO - Skipping chunk 39 (3900000 rows) due to checkpoint
+2025-10-24 05:39:27,164 - INFO - Skipping chunk 40 (4000000 rows) due to checkpoint
+2025-10-24 05:39:28,426 - INFO - Skipping chunk 41 (4100000 rows) due to checkpoint
+2025-10-24 05:39:29,844 - INFO - Skipping chunk 42 (4200000 rows) due to checkpoint
+2025-10-24 05:39:31,020 - INFO - Skipping chunk 43 (4300000 rows) due to checkpoint
+2025-10-24 05:39:32,446 - INFO - Skipping chunk 44 (4400000 rows) due to checkpoint
+2025-10-24 05:39:33,733 - INFO - Skipping chunk 45 (4500000 rows) due to checkpoint
+2025-10-24 05:39:35,189 - INFO - Skipping chunk 46 (4600000 rows) due to checkpoint
+2025-10-24 05:39:36,381 - INFO - Skipping chunk 47 (4700000 rows) due to checkpoint
+2025-10-24 05:39:37,515 - INFO - Skipping chunk 48 (4800000 rows) due to checkpoint
+2025-10-24 05:39:38,634 - INFO - Skipping chunk 49 (4900000 rows) due to checkpoint
+2025-10-24 05:39:39,689 - INFO - Skipping chunk 50 (5000000 rows) due to checkpoint
+2025-10-24 05:39:40,787 - INFO - Skipping chunk 51 (5100000 rows) due to checkpoint
+2025-10-24 05:39:41,855 - INFO - Skipping chunk 52 (5200000 rows) due to checkpoint
+2025-10-24 05:39:42,939 - INFO - Skipping chunk 53 (5300000 rows) due to checkpoint
+2025-10-24 05:39:44,009 - INFO - Skipping chunk 54 (5400000 rows) due to checkpoint
+2025-10-24 05:39:45,188 - INFO - Skipping chunk 55 (5500000 rows) due to checkpoint
+2025-10-24 05:39:46,507 - INFO - Skipping chunk 56 (5600000 rows) due to checkpoint
+2025-10-24 05:39:47,866 - INFO - Skipping chunk 57 (5700000 rows) due to checkpoint
+2025-10-24 05:39:49,002 - INFO - Skipping chunk 58 (5800000 rows) due to checkpoint
+2025-10-24 05:39:50,044 - INFO - Skipping chunk 59 (5900000 rows) due to checkpoint
+2025-10-24 05:39:51,312 - INFO - Skipping chunk 60 (6000000 rows) due to checkpoint
+2025-10-24 05:39:52,685 - INFO - Skipping chunk 61 (6100000 rows) due to checkpoint
+2025-10-24 05:39:54,406 - INFO - Skipping chunk 62 (6200000 rows) due to checkpoint
+2025-10-24 05:39:56,349 - INFO - Skipping chunk 63 (6300000 rows) due to checkpoint
+2025-10-24 05:39:57,512 - INFO - Skipping chunk 64 (6400000 rows) due to checkpoint
+2025-10-24 05:39:58,694 - INFO - Skipping chunk 65 (6500000 rows) due to checkpoint
+2025-10-24 05:39:59,847 - INFO - Skipping chunk 66 (6600000 rows) due to checkpoint
+2025-10-24 05:40:01,068 - INFO - Skipping chunk 67 (6700000 rows) due to checkpoint
+2025-10-24 05:40:02,499 - INFO - Skipping chunk 68 (6800000 rows) due to checkpoint
+2025-10-24 05:40:03,842 - INFO - Skipping chunk 69 (6900000 rows) due to checkpoint
+2025-10-24 05:40:05,078 - INFO - Skipping chunk 70 (7000000 rows) due to checkpoint
+2025-10-24 05:40:06,279 - INFO - Skipping chunk 71 (7100000 rows) due to checkpoint
+2025-10-24 05:40:07,460 - INFO - Skipping chunk 72 (7200000 rows) due to checkpoint
+2025-10-24 05:40:08,603 - INFO - Skipping chunk 73 (7300000 rows) due to checkpoint
+2025-10-24 05:40:09,663 - INFO - Skipping chunk 74 (7400000 rows) due to checkpoint
+2025-10-24 05:40:10,849 - INFO - Skipping chunk 75 (7500000 rows) due to checkpoint
+2025-10-24 05:40:11,939 - INFO - Skipping chunk 76 (7600000 rows) due to checkpoint
+2025-10-24 05:40:12,982 - INFO - Skipping chunk 77 (7700000 rows) due to checkpoint
+2025-10-24 05:40:14,032 - INFO - Skipping chunk 78 (7800000 rows) due to checkpoint
+2025-10-24 05:40:15,052 - INFO - Skipping chunk 79 (7900000 rows) due to checkpoint
+2025-10-24 05:40:16,242 - INFO - Skipping chunk 80 (8000000 rows) due to checkpoint
+2025-10-24 05:40:17,385 - INFO - Skipping chunk 81 (8100000 rows) due to checkpoint
+2025-10-24 05:40:18,651 - INFO - Skipping chunk 82 (8200000 rows) due to checkpoint
+2025-10-24 05:40:19,890 - INFO - Skipping chunk 83 (8300000 rows) due to checkpoint
+2025-10-24 05:40:21,046 - INFO - Skipping chunk 84 (8400000 rows) due to checkpoint
+2025-10-24 05:40:22,083 - INFO - Skipping chunk 85 (8500000 rows) due to checkpoint
+2025-10-24 05:40:23,113 - INFO - Skipping chunk 86 (8600000 rows) due to checkpoint
+2025-10-24 05:40:24,146 - INFO - Skipping chunk 87 (8700000 rows) due to checkpoint
+2025-10-24 05:40:25,148 - INFO - Skipping chunk 88 (8800000 rows) due to checkpoint
+2025-10-24 05:40:26,156 - INFO - Skipping chunk 89 (8900000 rows) due to checkpoint
+2025-10-24 05:40:27,194 - INFO - Skipping chunk 90 (9000000 rows) due to checkpoint
+2025-10-24 05:40:28,193 - INFO - Skipping chunk 91 (9100000 rows) due to checkpoint
+2025-10-24 05:40:29,198 - INFO - Skipping chunk 92 (9200000 rows) due to checkpoint
+2025-10-24 05:40:30,228 - INFO - Skipping chunk 93 (9300000 rows) due to checkpoint
+2025-10-24 05:40:31,283 - INFO - Skipping chunk 94 (9400000 rows) due to checkpoint
+2025-10-24 05:40:32,326 - INFO - Skipping chunk 95 (9500000 rows) due to checkpoint
+2025-10-24 05:40:33,332 - INFO - Skipping chunk 96 (9600000 rows) due to checkpoint
+2025-10-24 05:40:34,390 - INFO - Skipping chunk 97 (9700000 rows) due to checkpoint
+2025-10-24 05:40:35,399 - INFO - Skipping chunk 98 (9800000 rows) due to checkpoint
+2025-10-24 05:40:36,440 - INFO - Skipping chunk 99 (9900000 rows) due to checkpoint
+2025-10-24 05:40:37,473 - INFO - Skipping chunk 100 (10000000 rows) due to checkpoint
+2025-10-24 05:40:38,654 - INFO - Skipping chunk 101 (10100000 rows) due to checkpoint
+2025-10-24 05:40:39,668 - INFO - Skipping chunk 102 (10200000 rows) due to checkpoint
+2025-10-24 05:40:40,762 - INFO - Skipping chunk 103 (10300000 rows) due to checkpoint
+2025-10-24 05:40:41,761 - INFO - Skipping chunk 104 (10400000 rows) due to checkpoint
+2025-10-24 05:40:42,804 - INFO - Skipping chunk 105 (10500000 rows) due to checkpoint
+2025-10-24 05:40:43,815 - INFO - Skipping chunk 106 (10600000 rows) due to checkpoint
+2025-10-24 05:40:44,915 - INFO - Skipping chunk 107 (10700000 rows) due to checkpoint
+2025-10-24 05:40:45,984 - INFO - Skipping chunk 108 (10800000 rows) due to checkpoint
+2025-10-24 05:40:47,147 - INFO - Skipping chunk 109 (10900000 rows) due to checkpoint
+2025-10-24 05:40:48,149 - INFO - Skipping chunk 110 (11000000 rows) due to checkpoint
+2025-10-24 05:40:49,183 - INFO - Skipping chunk 111 (11100000 rows) due to checkpoint
+2025-10-24 05:40:50,223 - INFO - Skipping chunk 112 (11200000 rows) due to checkpoint
+2025-10-24 05:40:51,205 - INFO - Skipping chunk 113 (11300000 rows) due to checkpoint
+2025-10-24 05:40:52,196 - INFO - Skipping chunk 114 (11400000 rows) due to checkpoint
+2025-10-24 05:40:53,119 - INFO - Skipping chunk 115 (11500000 rows) due to checkpoint
+2025-10-24 05:40:54,304 - INFO - Skipping chunk 116 (11600000 rows) due to checkpoint
+2025-10-24 05:40:55,372 - INFO - Skipping chunk 117 (11700000 rows) due to checkpoint
+2025-10-24 05:40:56,465 - INFO - Skipping chunk 118 (11800000 rows) due to checkpoint
+2025-10-24 05:40:57,553 - INFO - Skipping chunk 119 (11900000 rows) due to checkpoint
+2025-10-24 05:40:58,730 - INFO - Skipping chunk 120 (12000000 rows) due to checkpoint
+2025-10-24 05:40:59,845 - INFO - Skipping chunk 121 (12100000 rows) due to checkpoint
+2025-10-24 05:41:00,924 - INFO - Skipping chunk 122 (12200000 rows) due to checkpoint
+2025-10-24 05:41:02,041 - INFO - Skipping chunk 123 (12300000 rows) due to checkpoint
+2025-10-24 05:41:03,131 - INFO - Skipping chunk 124 (12400000 rows) due to checkpoint
+2025-10-24 05:41:04,178 - INFO - Skipping chunk 125 (12500000 rows) due to checkpoint
+2025-10-24 05:41:05,221 - INFO - Skipping chunk 126 (12600000 rows) due to checkpoint
+2025-10-24 05:41:06,182 - INFO - Skipping chunk 127 (12691941 rows) due to checkpoint
+2025-10-24 05:41:06,187 - INFO - Processed 0 case files from CSV (rows read: 12691941)
+2025-10-24 05:49:53,199 - INFO - Processing sample data with new structured approach
+2025-10-24 05:49:53,332 - INFO - Database connection successful
+2025-10-24 05:49:53,333 - INFO - Processing case file CSV: uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv
+2025-10-24 05:51:50,296 - INFO - Processing sample data with new structured approach
+2025-10-24 05:51:50,372 - INFO - Database connection successful
+2025-10-24 05:51:50,372 - INFO - Processing case file CSV: uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv
+2025-10-24 06:06:22,968 - INFO - Processing sample data with new structured approach
+2025-10-24 06:06:23,368 - INFO - Database connection successful
+2025-10-24 06:06:23,369 - INFO - Processing case file CSV: uspto_data/extracted/TRCFECO2/case_file.csv/case_file.csv
