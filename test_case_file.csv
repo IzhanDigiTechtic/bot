@@ -1,6 +1,0 @@
-serial_no,registration_no,filing_dt,registration_dt,mark_id_char,tad_file_id
-1001,2001,20200101,20210101,TestMark1,1
-1002,2002,20200202,20210202,TestMark2,2
-1003,2003,20200303,20210303,TestMark3,3
-1004,2004,20200404,20210404,TestMark4,4
-1005,2005,20200505,20210505,TestMark5,5

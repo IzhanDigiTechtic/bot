@@ -1,0 +1,49 @@
+{
+  "project": {
+    "name": "USPTO Controller-Based Data Processing System",
+    "version": "1.0.0",
+    "description": "Modular system for downloading, processing, and storing USPTO trademark data"
+  },
+  "api": {
+    "base_url": "https://data.uspto.gov",
+    "search_endpoint": "/ui/datasets/products/search",
+    "full_url": "https://data.uspto.gov/ui/datasets/products/search?facets=true&latest=true&labels=Trademark",
+    "timeout": 30,
+    "retry_attempts": 3,
+    "headers": {
+      "User-Agent": "USPTO-Data-Processor/1.0.0",
+      "Accept": "application/json"
+    }
+  },
+  "download": {
+    "base_dir": "./uspto_data",
+    "force_redownload": false,
+    "verify_downloads": true,
+    "max_concurrent_downloads": 3
+  },
+  "processing": {
+    "batch_size": 10000,
+    "chunk_size": 50000,
+    "memory_limit_mb": 512,
+    "max_workers": 2
+  },
+  "database": {
+    "dbname": "trademarks",
+    "user": "postgres",
+    "password": "your_password_here",
+    "host": "localhost",
+    "port": "5432",
+    "use_copy": true
+  },
+  "orchestrator": {
+    "max_files_per_product": 2,
+    "enable_parallel_processing": false,
+    "log_level": "INFO"
+  },
+  "logging": {
+    "level": "INFO",
+    "file_logging": true,
+    "log_file": "./logs/uspto_processor.log",
+    "console_logging": true
+  }
+}

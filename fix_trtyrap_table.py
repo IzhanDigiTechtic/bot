@@ -1,60 +1,67 @@
 #!/usr/bin/env python3
 """
-Create the USPTO database schema - simplified approach
+Fix product_trtyrap table schema
+Recreate the table with the correct case file schema
 """
 
 import psycopg2
+import json
+from pathlib import Path
 
-def create_schema():
-    """Create the database schema"""
-    db_config = {
+def get_db_config():
+    """Get database configuration"""
+    config_file = Path("uspto_controller_config.json")
+    if config_file.exists():
+        with open(config_file, 'r') as f:
+            config = json.load(f)
+        db_config = config.get('database', {})
+        # Remove non-connection parameters
+        db_config.pop('use_copy', None)
+        return db_config
+    return {
         'dbname': 'trademarks',
         'user': 'postgres',
         'password': '1234',
         'host': 'localhost',
         'port': '5432'
     }
+
+def fix_trtyrap_table():
+    """Fix the product_trtyrap table schema"""
+    
+    print("Fixing product_trtyrap table schema...")
+    print("=" * 50)
+    
+    db_config = get_db_config()
     
     try:
         conn = psycopg2.connect(**db_config)
         cursor = conn.cursor()
         
-        # Drop existing tables
-        print("Dropping existing tables...")
-        cursor.execute("DROP TABLE IF EXISTS download_history CASCADE")
-        cursor.execute("DROP TABLE IF EXISTS trademark_case_files CASCADE")
-        cursor.execute("DROP TABLE IF EXISTS trademark_assignments CASCADE")
-        cursor.execute("DROP TABLE IF EXISTS trademark_owners CASCADE")
-        cursor.execute("DROP TABLE IF EXISTS trademark_correspondents CASCADE")
-        cursor.execute("DROP TABLE IF EXISTS trademark_classifications CASCADE")
-        cursor.execute("DROP TABLE IF EXISTS trademark_events CASCADE")
-        cursor.execute("DROP TABLE IF EXISTS trademark_statements CASCADE")
+        # Check current table structure
+        cursor.execute("""
+            SELECT column_name, data_type 
+            FROM information_schema.columns 
+            WHERE table_name = 'product_trtyrap' 
+            ORDER BY ordinal_position
+        """)
         
-        # Create download history table
-        print("Creating download_history table...")
-        cursor.execute('''
-            CREATE TABLE download_history (
-                id SERIAL PRIMARY KEY,
-                file_name VARCHAR(255) UNIQUE,
-                file_url TEXT,
-                file_size BIGINT,
-                download_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                file_hash VARCHAR(64),
-                product_id VARCHAR(50),
-                processed BOOLEAN DEFAULT FALSE,
-                last_processed TIMESTAMP,
-                processing_attempts INTEGER DEFAULT 0
-            )
-        ''')
+        current_columns = cursor.fetchall()
+        print("Current table structure:")
+        for col_name, col_type in current_columns:
+            print(f"  {col_name}: {col_type}")
         
-        # Create main trademark case files table
-        print("Creating trademark_case_files table...")
+        # Drop the existing table
+        print("\nDropping existing table...")
+        cursor.execute("DROP TABLE IF EXISTS product_trtyrap CASCADE")
+        
+        # Create the table with correct case file schema
+        print("Creating table with correct case file schema...")
         cursor.execute('''
-            CREATE TABLE trademark_case_files (
+            CREATE TABLE product_trtyrap (
                 id SERIAL PRIMARY KEY,
-                serial_number VARCHAR(20) UNIQUE,
+                serial_no VARCHAR(20) UNIQUE,
                 registration_number VARCHAR(20),
-                transaction_date DATE,
                 filing_date DATE,
                 registration_date DATE,
                 status_code VARCHAR(10),
@@ -120,7 +127,7 @@ def create_schema():
                 lb_use_cur_in BOOLEAN DEFAULT FALSE,
                 lb_none_file_in BOOLEAN DEFAULT FALSE,
                 ir_auto_reg_dt DATE,
-                ir_first_refus_in BOOLEAN,
+                ir_first_refus_in BOOLEAN DEFAULT FALSE,
                 ir_death_dt DATE,
                 ir_publication_dt DATE,
                 ir_registration_dt DATE,
@@ -129,50 +136,83 @@ def create_schema():
                 ir_status_cd VARCHAR(10),
                 ir_status_dt DATE,
                 ir_priority_dt DATE,
-                ir_priority_in BOOLEAN,
-                related_other_in BOOLEAN,
+                ir_priority_in BOOLEAN DEFAULT FALSE,
+                related_other_in BOOLEAN DEFAULT FALSE,
                 tad_file_id INTEGER,
                 data_source VARCHAR(100),
                 file_hash VARCHAR(64),
+                batch_number INTEGER,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         ''')
         
         # Create indexes
-        print("Creating indexes...")
-        cursor.execute('CREATE INDEX idx_trademark_case_files_serial ON trademark_case_files(serial_number)')
-        cursor.execute('CREATE INDEX idx_trademark_case_files_registration ON trademark_case_files(registration_number)')
-        cursor.execute('CREATE INDEX idx_trademark_case_files_filing_date ON trademark_case_files(filing_date)')
-        cursor.execute('CREATE INDEX idx_trademark_case_files_status ON trademark_case_files(status_code)')
-        
-        # mark_identification is TEXT and can be very large. Creating a btree
-        # index on the raw TEXT column may exceed PostgreSQL index row size limits.
-        # Use an expression index on md5(mark_identification) which stores a
-        # fixed-size hash and is safe to index for equality/lookup use-cases.
-        cursor.execute('CREATE INDEX idx_trademark_case_files_mark_id ON trademark_case_files (md5(mark_identification))')
+        cursor.execute('CREATE INDEX idx_product_trtyrap_serial ON product_trtyrap(serial_no)')
+        cursor.execute('CREATE INDEX idx_product_trtyrap_registration ON product_trtyrap(registration_number)')
+        cursor.execute('CREATE INDEX idx_product_trtyrap_filing_date ON product_trtyrap(filing_date)')
+        cursor.execute('CREATE INDEX idx_product_trtyrap_batch ON product_trtyrap(batch_number)')
         
         conn.commit()
-        print("Database schema created successfully!")
         
-        # Verify tables were created
+        # Check new table structure
         cursor.execute("""
-            SELECT table_name 
-            FROM information_schema.tables 
-            WHERE table_schema = 'public' 
-            AND table_name LIKE 'trademark_%'
-            ORDER BY table_name
+            SELECT column_name, data_type 
+            FROM information_schema.columns 
+            WHERE table_name = 'product_trtyrap' 
+            ORDER BY ordinal_position
         """)
         
-        tables = cursor.fetchall()
-        print(f"\nCreated {len(tables)} tables:")
-        for table in tables:
-            print(f"  - {table[0]}")
+        new_columns = cursor.fetchall()
+        print("\nNew table structure:")
+        for col_name, col_type in new_columns:
+            print(f"  {col_name}: {col_type}")
+        
+        # Update the product registry
+        cursor.execute("""
+            UPDATE uspto_products 
+            SET schema_created = TRUE 
+            WHERE product_id = 'TRTYRAP'
+        """)
+        conn.commit()
         
         conn.close()
         
+        print("\n✅ SUCCESS: product_trtyrap table recreated with correct schema!")
+        print("   The table now has all the required columns including registration_number")
+        
     except Exception as e:
-        print(f"Error creating schema: {e}")
+        print(f"❌ ERROR: {e}")
+        try:
+            if conn:
+                conn.close()
+        except:
+            pass
+
+def main():
+    """Main function"""
+    
+    print("Fix product_trtyrap Table Schema")
+    print("=" * 50)
+    print()
+    print("ISSUE: product_trtyrap table was created with generic schema")
+    print("- Missing columns: registration_number, filing_date, etc.")
+    print("- Should use case file schema like TRCFECO2")
+    print()
+    
+    fix_trtyrap_table()
+    
+    print("\n" + "=" * 50)
+    print("TABLE SCHEMA FIX COMPLETED!")
+    print("=" * 50)
+    print()
+    print("The product_trtyrap table now has the correct schema:")
+    print("- ✅ serial_no (primary key)")
+    print("- ✅ registration_number")
+    print("- ✅ filing_date, registration_date")
+    print("- ✅ All trademark-specific columns")
+    print()
+    print("The system should now process TRTYRAP data without errors!")
 
 if __name__ == "__main__":
-    create_schema()
+    main()

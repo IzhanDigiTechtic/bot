@@ -1,0 +1,31 @@
+{
+  "api": {
+    "api_url": "https://data.uspto.gov/ui/datasets/products/search",
+    "timeout": 30,
+    "retry_attempts": 3
+  },
+  "download": {
+    "download_dir": "./uspto_data",
+    "keep_latest_zips": 10,
+    "force_redownload": true
+  },
+  "processing": {
+    "batch_size": 5000,
+    "chunk_size": 25000,
+    "memory_limit_mb": 512,
+    "max_workers": 2
+  },
+  "database": {
+    "dbname": "trademarks",
+    "user": "postgres",
+    "password": "1234",
+    "host": "localhost",
+    "port": "5432",
+    "use_copy": true
+  },
+  "orchestrator": {
+    "max_files_per_product": 10,
+    "enable_parallel_processing": false,
+    "log_level": "INFO"
+  }
+}
