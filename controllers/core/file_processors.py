@@ -234,7 +234,8 @@ class XMLProcessor(USPTOFileProcessor):
             # Use iterative parsing for large files
             for event, elem in ET.iterparse(file_path, events=('end',)):
                 if elem.tag == 'assignment-entry' and product_id in ['TRTYRAG', 'TRTDXFAG']:
-                    record = self._extract_single_assignment(elem)
+                    # Use product-specific processor
+                    record = TRTYRAGProcessor(self.config)._extract_single_assignment(elem)
                     if record:
                         cleaned_record = self._clean_record(record, product_id)
                         cleaned_record['batch_number'] = batch_number
@@ -247,7 +248,7 @@ class XMLProcessor(USPTOFileProcessor):
                             batch_number += 1
                 
                 elif elem.tag in ['proceeding', 'ttab-proceeding'] and product_id in ['TTABTDXF', 'TTABYR']:
-                    record = self._xml_element_to_dict(elem)
+                    record = TTABProcessor(self.config)._element_to_dict(elem)
                     if record:
                         cleaned_record = self._clean_record(record, product_id)
                         cleaned_record['batch_number'] = batch_number
@@ -277,8 +278,15 @@ class XMLProcessor(USPTOFileProcessor):
             tree = ET.parse(file_path)
             root = tree.getroot()
             
-            # Find record elements based on product type
-            records = self._extract_xml_records(root, product_id)
+            # Dispatch to product-specific processors
+            if product_id in ['TRTDXFAP', 'TRTYRAP']:
+                records = TRTDXFAPProcessor(self.config).extract_case_file_records(root)
+            elif product_id in ['TRTYRAG', 'TRTDXFAG']:
+                records = TRTYRAGProcessor(self.config).extract_assignment_records(root)
+            elif product_id in ['TTABTDXF', 'TTABYR']:
+                records = TTABProcessor(self.config).extract_ttab_records(root)
+            else:
+                records = self._extract_xml_records(root, product_id)
             
             batch_number = 0
             batch_records = []
@@ -331,6 +339,167 @@ class XMLProcessor(USPTOFileProcessor):
         
         return records
     
+class TRTDXFAPProcessor(USPTOFileProcessor):
+    """Product-specific XML processor for TRTDXFAP/TRTYRAP case-file data"""
+    
+    def extract_case_file_records(self, root: ET.Element) -> List[Dict[str, Any]]:
+        records: List[Dict[str, Any]] = []
+        for case_elem in root.findall('.//case-file'):
+            rec = self._extract_case_file_record(case_elem)
+            if rec:
+                records.append(rec)
+        return records
+    
+    def _extract_case_file_record(self, case_elem: ET.Element) -> Optional[Dict[str, Any]]:
+        try:
+            record: Dict[str, Any] = {}
+            # Basic IDs
+            record['serial_no'] = self._get_text(case_elem.find('serial-number'))
+            reg_no = self._get_text(case_elem.find('registration-number'))
+            record['registration_number'] = None if (reg_no == '0000000') else reg_no
+            header = case_elem.find('case-file-header')
+            if header is not None:
+                record['filing_date'] = self._normalize_date(self._get_text(header.find('filing-date')))
+                record['registration_date'] = self._normalize_date(self._get_text(header.find('registration-date')))
+                record['status_code'] = self._get_text(header.find('status-code'))
+                record['status_date'] = self._normalize_date(self._get_text(header.find('status-date')))
+                record['mark_identification'] = self._get_text(header.find('mark-identification'))
+                record['mark_drawing_code'] = self._get_text(header.find('mark-drawing-code'))
+                record['publication_dt'] = self._normalize_date(self._get_text(header.find('published-for-opposition-date')))
+                record['renewal_dt'] = self._normalize_date(self._get_text(header.find('renewal-date')))
+                record['exm_office_cd'] = self._get_text(header.find('law-office-assigned-location-code'))
+                # T/F flags to *_in
+                def flag(tag):
+                    v = self._get_text(header.find(tag))
+                    return 'T' if (v and v.upper().startswith('T')) else 'F' if v else None
+                record['trade_mark_in'] = flag('trademark-in')
+                record['coll_trade_mark_in'] = flag('collective-trademark-in')
+                record['serv_mark_in'] = flag('service-mark-in')
+                record['coll_serv_mark_in'] = flag('collective-service-mark-in')
+                record['coll_memb_mark_in'] = flag('collective-membership-mark-in')
+                record['cert_mark_in'] = flag('certification-mark-in')
+                record['cancel_pend_in'] = flag('cancellation-pending-in')
+                record['concur_use_pub_in'] = flag('published-concurrent-in')
+                record['concur_use_in'] = flag('concurrent-use-in')
+                record['concur_use_pend_in'] = flag('concurrent-use-proceeding-in')
+                record['interfer_pend_in'] = flag('interference-pending-in')
+                record['opposit_pend_in'] = flag('opposition-pending-in')
+                record['repub_12c_in'] = flag('section-12c-in')
+                record['std_char_claim_in'] = flag('standard-characters-claimed-in')
+                record['for_priority_in'] = flag('foreign-priority-in')
+                record['lb_itu_file_in'] = flag('intent-to-use-in')
+                record['lb_itu_cur_in'] = flag('intent-to-use-current-in')
+                record['lb_use_file_in'] = flag('filed-as-use-application-in')
+                record['lb_use_cur_in'] = flag('use-application-currently-in')
+                record['amend_supp_reg_in'] = flag('supplemental-register-amended-in')
+                record['supp_reg_in'] = flag('supplemental-register-in')
+                record['amend_principal_in'] = flag('principal-register-amended-in')
+                record['renewal_file_in'] = flag('renewal-filed-in')
+                record['draw_color_file_in'] = flag('color-drawing-filed-in')
+                record['draw_color_cur_in'] = flag('color-drawing-current-in')
+                record['draw_3d_file_in'] = flag('drawing-3d-filed-in')
+                record['draw_3d_cur_in'] = flag('drawing-3d-current-in')
+            # IR block
+            intl = case_elem.find('international-registration')
+            if intl is not None:
+                record['ir_registration_no'] = self._get_text(intl.find('international-registration-number'))
+                record['ir_registration_dt'] = self._normalize_date(self._get_text(intl.find('international-registration-date')))
+                record['ir_publication_dt'] = self._normalize_date(self._get_text(intl.find('international-publication-date')))
+                record['ir_renewal_dt'] = self._normalize_date(self._get_text(intl.find('international-renewal-date')))
+                record['ir_auto_reg_dt'] = self._normalize_date(self._get_text(intl.find('auto-protection-date')))
+                record['ir_status_cd'] = self._get_text(intl.find('international-status-code'))
+                record['ir_status_dt'] = self._normalize_date(self._get_text(intl.find('international-status-date')))
+                prio_in = self._get_text(intl.find('priority-claimed-in'))
+                record['ir_priority_in'] = 'T' if (prio_in and prio_in.upper().startswith('T')) else ('F' if prio_in else None)
+                record['ir_priority_dt'] = self._normalize_date(self._get_text(intl.find('priority-claimed-date')))
+                first_ref = self._get_text(intl.find('first-refusal-in'))
+                record['ir_first_refus_in'] = 'T' if (first_ref and first_ref.upper().startswith('T')) else ('F' if first_ref else None)
+            record['data_source'] = 'TRTDXFAP [XML]'
+            record['batch_number'] = 0
+            return record
+        except Exception as e:
+            self.logger.error(f"Error extracting TRTDXFAP case-file record: {e}")
+            return None
+    
+    def _normalize_date(self, s: Optional[str]) -> Optional[str]:
+        if not s or len(s) != 8 or not s.isdigit():
+            return None
+        y, m, d = s[:4], s[4:6], s[6:8]
+        if m == '00' or d == '00':
+            return None
+        return f"{y}-{m}-{d}"
+    
+    def _get_text(self, el: Optional[ET.Element]) -> Optional[str]:
+        return el.text.strip() if el is not None and el.text and el.text.strip() else None
+
+class TRTYRAGProcessor(USPTOFileProcessor):
+    """Product-specific XML processor for TRTYRAG/TRTDXFAG assignments"""
+    
+    def extract_assignment_records(self, root: ET.Element) -> List[Dict[str, Any]]:
+        out: List[Dict[str, Any]] = []
+        for entry in root.findall('.//assignment-entry'):
+            base = self._extract_assignment_base(entry)
+            if base is None:
+                continue
+            props = entry.find('properties')
+            prop_list = props.findall('property') if props is not None else []
+            if not prop_list:
+                out.append(base)
+                continue
+            for prop in prop_list:
+                rec = dict(base)
+                rec['serial_no'] = self._text(prop.find('serial-no'))
+                rec['registration_number'] = self._text(prop.find('registration-no'))
+                rec['intl_reg_no'] = self._text(prop.find('intl-reg-no'))
+                out.append(rec)
+        return out
+    
+    def _extract_assignment_base(self, entry: ET.Element) -> Optional[Dict[str, Any]]:
+        try:
+            rec: Dict[str, Any] = {}
+            assignment = entry.find('assignment')
+            if assignment is not None:
+                rec['reel_no'] = self._text(assignment.find('reel-no'))
+                rec['frame_no'] = self._text(assignment.find('frame-no'))
+                rec['date_recorded'] = self._norm(self._text(assignment.find('date-recorded')))
+                rec['conveyance_text'] = self._text(assignment.find('conveyance-text'))
+                rec['last_update_date'] = self._norm(self._text(assignment.find('last-update-date')))
+                rec['purge_indicator'] = self._text(assignment.find('purge-indicator'))
+                pc = self._text(assignment.find('page-count'))
+                rec['page_count'] = int(pc) if pc and pc.isdigit() else None
+            if rec.get('reel_no') and rec.get('frame_no'):
+                rec['assignment_id'] = f"{rec['reel_no']}-{rec['frame_no']}"
+            rec['assignor_name'] = self._text(entry.find('.//assignors/assignor/person-or-organization-name'))
+            rec['assignee_name'] = self._text(entry.find('.//assignees/assignee/person-or-organization-name'))
+            rec['data_source'] = 'TRTYRAG [XML]'
+            rec['batch_number'] = 0
+            return rec
+        except Exception as e:
+            self.logger.error(f"Error extracting TRTYRAG base: {e}")
+            return None
+    
+    def _text(self, el: Optional[ET.Element]) -> Optional[str]:
+        return el.text.strip() if el is not None and el.text and el.text.strip() else None
+    
+    def _norm(self, s: Optional[str]) -> Optional[str]:
+        if not s or len(s) != 8 or not s.isdigit():
+            return None
+        y, m, d = s[:4], s[4:6], s[6:8]
+        if m == '00' or d == '00':
+            return None
+        return f"{y}-{m}-{d}"
+
+class TTABProcessor(USPTOFileProcessor):
+    """Product-specific XML processor for TTAB datasets"""
+    
+    def extract_ttab_records(self, root: ET.Element) -> List[Dict[str, Any]]:
+        results: List[Dict[str, Any]] = []
+        for elem in root.findall('.//proceeding') + root.findall('.//ttab-proceeding'):
+            results.append(self._element_to_dict(elem))
+        return results
+    
+    def _element_to_dict(self, element: ET.Element) -> Dict[str, Any]:
+        return XMLProcessor(self.config)._xml_element_to_dict(element)
     def _extract_assignment_records(self, root: ET.Element) -> List[Dict[str, Any]]:
         """Extract assignment records from XML"""
         records = []

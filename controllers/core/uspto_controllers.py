@@ -284,6 +284,14 @@ class DownloadController(BaseController):
             extract_dir = self.download_dir / "extracted" / product_id / zip_path.stem
             extract_dir.mkdir(parents=True, exist_ok=True)
             
+            # Check if already extracted and has data files
+            if extract_dir.exists():
+                csv_files = list(extract_dir.rglob('*.csv'))
+                xml_files = list(extract_dir.rglob('*.xml'))
+                if csv_files or xml_files:
+                    self.logger.info(f"Files already extracted to {extract_dir} ({len(csv_files)} CSV, {len(xml_files)} XML files)")
+                    return extract_dir
+            
             with zipfile.ZipFile(zip_path, 'r') as zip_ref:
                 zip_ref.extractall(extract_dir)
             
@@ -301,6 +309,25 @@ class DownloadController(BaseController):
             if file_path.is_file() and file_path.suffix.lower() in ['.csv', '.xml']:
                 data_files.append(file_path)
         return data_files
+    
+    def check_extracted_files_exist(self, file_info: FileInfo) -> Optional[Path]:
+        """Check if extracted files already exist for a given file"""
+        zip_filename = file_info.filename
+        if not zip_filename.endswith('.zip'):
+            return None
+        
+        # Expected extraction directory path
+        extract_dir = self.download_dir / "extracted" / file_info.product_id / zip_filename.replace('.zip', '')
+        
+        # Check if directory exists and has data files
+        if extract_dir.exists():
+            csv_files = list(extract_dir.rglob('*.csv'))
+            xml_files = list(extract_dir.rglob('*.xml'))
+            if csv_files or xml_files:
+                self.logger.info(f"Found existing extracted files in {extract_dir} ({len(csv_files)} CSV, {len(xml_files)} XML)")
+                return extract_dir
+        
+        return None
 
 class ProcessingController(BaseController):
     """Controller for data processing and transformation"""
@@ -356,6 +383,12 @@ class ProcessingController(BaseController):
             
             for chunk_df in pd.read_csv(file_path, chunksize=chunk_size, low_memory=False):
                 batch_records = []
+                
+                # For TRCFECO2, log first chunk to debug column issues
+                if product_id == 'TRCFECO2' and batch_count == 0:
+                    self.logger.info(f"TRCFECO2 CSV columns: {list(chunk_df.columns)}")
+                    self.logger.info(f"Number of columns: {len(chunk_df.columns)}")
+                    self.logger.info(f"First row sample: {chunk_df.iloc[0].to_dict()}")
                 
                 # Process chunk
                 for _, row in chunk_df.iterrows():
@@ -529,17 +562,39 @@ class ProcessingController(BaseController):
     def _clean_record(self, record: Dict, product_id: str) -> Optional[Dict]:
         """Clean and normalize a record with proper column mapping"""
         try:
-            # First map column names to match database schema
-            mapped_record = self._map_column_names(record)
+            # Always apply mapping to convert CSV column names to database column names
+            # For TRCFECO2, we need to map specific columns
+            if product_id == 'TRCFECO2':
+                mapped_record = self._map_trcfeco2_columns(record)
+            else:
+                # Map column names to match database schema for other products
+                mapped_record = self._map_column_names(record)
             
             cleaned = {}
             for key, value in mapped_record.items():
-                # Clean values with proper type conversion
-                if pd.isna(value) or value == '' or str(value).lower() == 'nan':
+                # Skip None/NaN values immediately
+                if pd.isna(value):
+                    cleaned[key] = None
+                    continue
+                
+                # Convert to string and check if empty
+                str_value = str(value).strip()
+                if str_value == '' or str_value.lower() in ['nan', 'none', 'null']:
+                    cleaned[key] = None
+                    continue
+                
+                # For date columns (_dt or _date), treat empty strings as None
+                if (key.endswith('_dt') or key.endswith('_date')) and (not str_value or str_value in ['', '0000-00-00', 'nan']):
+                    cleaned[key] = None
+                    continue
+                
+                # Convert values based on their type and column name
+                converted = self._convert_value(value, key)
+                # Double-check for empty strings after conversion
+                if isinstance(converted, str) and converted.strip() == '':
                     cleaned[key] = None
                 else:
-                    # Convert values based on their type and column name
-                    cleaned[key] = self._convert_value(value, key)
+                    cleaned[key] = converted
             
             # Add metadata
             cleaned['data_source'] = f"{product_id} [CSV]"
@@ -551,13 +606,48 @@ class ProcessingController(BaseController):
             self.logger.error(f"Error cleaning record: {e}")
             return None
     
+    def _map_trcfeco2_columns(self, record: Dict) -> Dict:
+        """Map TRCFECO2 CSV column names to database column names"""
+        # TRCFECO2 specific column mappings
+        # Only map columns that have different names in database vs CSV
+        column_mappings = {
+            'mark_id_char': 'mark_identification',
+            'registration_no': 'registration_number',
+            'filing_dt': 'filing_date',
+            'registration_dt': 'registration_date',
+            # Skip file_location as it's not in database schema
+        }
+        
+        mapped_record = {}
+        for key, value in record.items():
+            # Map the key if it exists in our mappings
+            if key in column_mappings:
+                mapped_key = column_mappings[key]
+                mapped_record[mapped_key] = value
+            else:
+                # Keep the original key if no mapping exists
+                # But skip 'file_location' as it's not in database
+                if key != 'file_location':
+                    mapped_record[key] = value
+        
+        return mapped_record
+    
     def _map_column_names(self, record: Dict) -> Dict:
         """Map column names to match database schema"""
         
-        # Column name mappings
+        # Column name mappings for TRCFECO2 CSV files
         column_mappings = {
+            # TRCFECO2 specific mappings
+            'file_location': 'file_location_cd',  # This is the current location field
+            'exm_attorney_name': 'exm_attorney_name',  # This is correct as-is
+            'filing_dt': 'filing_dt',  # Already correct
+            'publication_dt': 'publication_dt',  # Already correct  
+            'registration_dt': 'registration_dt',  # Already correct
+            'registration_no': 'registration_number',  # Map to correct database column
+            'serial_no': 'serial_no',  # Already correct
+            
+            # Generic mappings for other products
             'serial_number': 'serial_no',
-            # Note: registration_number is already correct in database, don't map it
             'filing_date': 'filing_dt',
             'registration_date': 'registration_dt',
             'mark_identification': 'mark_id_char',
@@ -615,25 +705,30 @@ class ProcessingController(BaseController):
                     return False
                 return None
             
-            # Handle date columns (ending with _dt)
-            elif column_name.endswith('_dt'):
+            # Handle date columns (ending with _dt or _date)
+            elif column_name.endswith('_dt') or column_name.endswith('_date'):
                 if pd.isna(value):
                     return None
                 # Convert pandas timestamp to date string
                 if hasattr(value, 'date'):
                     return value.date()
                 # Handle string dates
-                elif isinstance(value, str) and value.strip():
-                    return value.strip()
+                elif isinstance(value, str):
+                    stripped = value.strip()
+                    # Return None for empty strings to avoid PostgreSQL date parsing errors
+                    if stripped == '' or stripped == '0000-00-00':
+                        return None
+                    return stripped
                 return None
             
             # Handle integer columns (specific columns)
-            elif column_name in ['serial_no', 'registration_no', 'tad_file_id']:
+            elif column_name in ['serial_no', 'registration_number', 'registration_no', 'tad_file_id', 'cfh_status_cd', 'mark_draw_cd']:
                 if pd.isna(value):
                     return None
                 if isinstance(value, (int, float)):
                     return int(value) if not pd.isna(value) else None
-                return str(value).strip() if str(value).strip() else None
+                str_val = str(value).strip()
+                return int(str_val) if str_val and str_val != 'nan' else None
             
             # Handle all other columns as TEXT (safe approach)
             else:
@@ -651,6 +746,9 @@ class ProcessingController(BaseController):
             # Special handling for assignment XML files (TRTYRAG, TRTDXFAG)
             if product_id in ['TRTYRAG', 'TRTDXFAG'] and element.tag == 'assignment-entry':
                 return self._extract_assignment_record(element, product_id)
+            # Special handling for case-file XML (applications) for TRTDXFAP/TRTYRAP
+            if product_id in ['TRTDXFAP', 'TRTYRAP'] and element.tag == 'case-file':
+                return self._extract_case_file_record(element, product_id)
             
             # Default extraction for other XML types
             record = {}
@@ -682,20 +780,27 @@ class ProcessingController(BaseController):
             if assignment is not None:
                 record['reel_no'] = self._get_xml_text(assignment.find('reel-no'))
                 record['frame_no'] = self._get_xml_text(assignment.find('frame-no'))
-                record['date_recorded'] = self._get_xml_text(assignment.find('date-recorded'))
+                # Normalize dates from YYYYMMDD -> YYYY-MM-DD
+                record['date_recorded'] = self._normalize_xml_date(self._get_xml_text(assignment.find('date-recorded')))
                 record['conveyance_text'] = self._get_xml_text(assignment.find('conveyance-text'))
-                record['last_update_date'] = self._get_xml_text(assignment.find('last-update-date'))
+                record['last_update_date'] = self._normalize_xml_date(self._get_xml_text(assignment.find('last-update-date')))
                 record['purge_indicator'] = self._get_xml_text(assignment.find('purge-indicator'))
-                record['page_count'] = self._get_xml_text(assignment.find('page-count'))
+                page_count_text = self._get_xml_text(assignment.find('page-count'))
+                record['page_count'] = int(page_count_text) if page_count_text and page_count_text.isdigit() else None
                 
                 # Extract correspondent data
                 correspondent = assignment.find('correspondent')
                 if correspondent is not None:
                     record['correspondent_name'] = self._get_xml_text(correspondent.find('person-or-organization-name'))
-                    record['correspondent_address1'] = self._get_xml_text(correspondent.find('address-1'))
-                    record['correspondent_address2'] = self._get_xml_text(correspondent.find('address-2'))
-                    record['correspondent_address3'] = self._get_xml_text(correspondent.find('address-3'))
-                    record['correspondent_address4'] = self._get_xml_text(correspondent.find('address-4'))
+                    addr1 = self._get_xml_text(correspondent.find('address-1'))
+                    addr2 = self._get_xml_text(correspondent.find('address-2'))
+                    addr3 = self._get_xml_text(correspondent.find('address-3'))
+                    addr4 = self._get_xml_text(correspondent.find('address-4'))
+                    record['correspondent_address_1'] = addr1
+                    record['correspondent_address_2'] = addr2
+                    # Merge address-3 and address-4 into address_3 to fit schema
+                    merged_addr3 = ', '.join([part for part in [addr3, addr4] if part]) if (addr3 or addr4) else None
+                    record['correspondent_address_3'] = merged_addr3
             
             # Extract assignor data (take first assignor)
             assignors = assignment_elem.find('assignors')
@@ -703,16 +808,14 @@ class ProcessingController(BaseController):
                 assignor = assignors.find('assignor')
                 if assignor is not None:
                     record['assignor_name'] = self._get_xml_text(assignor.find('person-or-organization-name'))
-                    record['assignor_city'] = self._get_xml_text(assignor.find('city'))
-                    record['assignor_state'] = self._get_xml_text(assignor.find('state'))
-                    record['assignor_country'] = self._get_xml_text(assignor.find('country-name'))
-                    record['assignor_postcode'] = self._get_xml_text(assignor.find('postcode'))
-                    record['assignor_execution_date'] = self._get_xml_text(assignor.find('execution-date'))
-                    record['assignor_date_acknowledged'] = self._get_xml_text(assignor.find('date-acknowledged'))
-                    record['assignor_legal_entity'] = self._get_xml_text(assignor.find('legal-entity-text'))
-                    record['assignor_nationality'] = self._get_xml_text(assignor.find('nationality'))
-                    record['assignor_address1'] = self._get_xml_text(assignor.find('address-1'))
-                    record['assignor_address2'] = self._get_xml_text(assignor.find('address-2'))
+                    # Build single assignor_address as per schema
+                    a_addr1 = self._get_xml_text(assignor.find('address-1'))
+                    a_addr2 = self._get_xml_text(assignor.find('address-2'))
+                    a_city = self._get_xml_text(assignor.find('city'))
+                    a_state = self._get_xml_text(assignor.find('state'))
+                    a_post = self._get_xml_text(assignor.find('postcode'))
+                    assignor_parts = [a_addr1, a_addr2, a_city, a_state, a_post]
+                    record['assignor_address'] = ', '.join([p for p in assignor_parts if p]) if any(assignor_parts) else None
             
             # Extract assignee data (take first assignee)
             assignees = assignment_elem.find('assignees')
@@ -720,14 +823,14 @@ class ProcessingController(BaseController):
                 assignee = assignees.find('assignee')
                 if assignee is not None:
                     record['assignee_name'] = self._get_xml_text(assignee.find('person-or-organization-name'))
-                    record['assignee_city'] = self._get_xml_text(assignee.find('city'))
-                    record['assignee_state'] = self._get_xml_text(assignee.find('state'))
-                    record['assignee_country'] = self._get_xml_text(assignee.find('country-name'))
-                    record['assignee_postcode'] = self._get_xml_text(assignee.find('postcode'))
-                    record['assignee_legal_entity'] = self._get_xml_text(assignee.find('legal-entity-text'))
-                    record['assignee_nationality'] = self._get_xml_text(assignee.find('nationality'))
-                    record['assignee_address1'] = self._get_xml_text(assignee.find('address-1'))
-                    record['assignee_address2'] = self._get_xml_text(assignee.find('address-2'))
+                    # Build single assignee_address as per schema
+                    b_addr1 = self._get_xml_text(assignee.find('address-1'))
+                    b_addr2 = self._get_xml_text(assignee.find('address-2'))
+                    b_city = self._get_xml_text(assignee.find('city'))
+                    b_state = self._get_xml_text(assignee.find('state'))
+                    b_post = self._get_xml_text(assignee.find('postcode'))
+                    assignee_parts = [b_addr1, b_addr2, b_city, b_state, b_post]
+                    record['assignee_address'] = ', '.join([p for p in assignee_parts if p]) if any(assignee_parts) else None
             
             # Extract property data (take first property)
             properties = assignment_elem.find('properties')
@@ -757,12 +860,104 @@ class ProcessingController(BaseController):
         except Exception as e:
             self.logger.error(f"Error extracting assignment record: {e}")
             return None
+
+    def _extract_case_file_record(self, case_elem, product_id: str) -> Optional[Dict]:
+        """Extract case-file application record (TRTDXFAP/TRTYRAP)"""
+        try:
+            record: Dict[str, Any] = {}
+            # Basic IDs
+            record['serial_no'] = self._get_xml_text(case_elem.find('serial-number'))
+            reg_no = self._get_xml_text(case_elem.find('registration-number'))
+            record['registration_number'] = None if (reg_no == '0000000') else reg_no
+            
+            header = case_elem.find('case-file-header')
+            if header is not None:
+                # Dates and codes
+                record['filing_date'] = self._normalize_xml_date(self._get_xml_text(header.find('filing-date')))
+                record['registration_date'] = self._normalize_xml_date(self._get_xml_text(header.find('registration-date')))
+                record['status_code'] = self._get_xml_text(header.find('status-code'))
+                record['status_date'] = self._normalize_xml_date(self._get_xml_text(header.find('status-date')))
+                record['mark_identification'] = self._get_xml_text(header.find('mark-identification'))
+                record['mark_drawing_code'] = self._get_xml_text(header.find('mark-drawing-code'))
+                record['publication_dt'] = self._normalize_xml_date(self._get_xml_text(header.find('published-for-opposition-date')))
+                record['renewal_dt'] = self._normalize_xml_date(self._get_xml_text(header.find('renewal-date')))
+                record['exm_office_cd'] = self._get_xml_text(header.find('law-office-assigned-location-code'))
+                # Booleans → *_in
+                def flag(tag):
+                    v = self._get_xml_text(header.find(tag))
+                    return 'T' if (v and v.upper().startswith('T')) else 'F' if v else None
+                record['trade_mark_in'] = flag('trademark-in')
+                record['coll_trade_mark_in'] = flag('collective-trademark-in')
+                record['serv_mark_in'] = flag('service-mark-in')
+                record['coll_serv_mark_in'] = flag('collective-service-mark-in')
+                record['coll_memb_mark_in'] = flag('collective-membership-mark-in')
+                record['cert_mark_in'] = flag('certification-mark-in')
+                record['cancel_pend_in'] = flag('cancellation-pending-in')
+                record['concur_use_pub_in'] = flag('published-concurrent-in')
+                record['concur_use_in'] = flag('concurrent-use-in')
+                record['concur_use_pend_in'] = flag('concurrent-use-proceeding-in')
+                record['interfer_pend_in'] = flag('interference-pending-in')
+                record['opposit_pend_in'] = flag('opposition-pending-in')
+                record['repub_12c_in'] = flag('section-12c-in')
+                record['std_char_claim_in'] = flag('standard-characters-claimed-in')
+                record['for_priority_in'] = flag('foreign-priority-in')
+                record['lb_itu_file_in'] = flag('intent-to-use-in')
+                record['lb_itu_cur_in'] = flag('intent-to-use-current-in')
+                record['lb_use_file_in'] = flag('filed-as-use-application-in')
+                record['lb_use_cur_in'] = flag('use-application-currently-in')
+                record['amend_supp_reg_in'] = flag('supplemental-register-amended-in')
+                record['supp_reg_in'] = flag('supplemental-register-in')
+                record['amend_principal_in'] = flag('principal-register-amended-in')
+                record['renewal_file_in'] = flag('renewal-filed-in')
+                record['draw_color_file_in'] = flag('color-drawing-filed-in')
+                record['draw_color_cur_in'] = flag('color-drawing-current-in')
+                record['draw_3d_file_in'] = flag('drawing-3d-filed-in')
+                record['draw_3d_cur_in'] = flag('drawing-3d-current-in')
+                
+            # International registration block → ir_*
+            intl = case_elem.find('international-registration')
+            if intl is not None:
+                record['ir_registration_no'] = self._get_xml_text(intl.find('international-registration-number'))
+                record['ir_registration_dt'] = self._normalize_xml_date(self._get_xml_text(intl.find('international-registration-date')))
+                record['ir_publication_dt'] = self._normalize_xml_date(self._get_xml_text(intl.find('international-publication-date')))
+                record['ir_renewal_dt'] = self._normalize_xml_date(self._get_xml_text(intl.find('international-renewal-date')))
+                record['ir_auto_reg_dt'] = self._normalize_xml_date(self._get_xml_text(intl.find('auto-protection-date')))
+                record['ir_status_cd'] = self._get_xml_text(intl.find('international-status-code'))
+                record['ir_status_dt'] = self._normalize_xml_date(self._get_xml_text(intl.find('international-status-date')))
+                # Priority
+                prio_in = self._get_xml_text(intl.find('priority-claimed-in'))
+                record['ir_priority_in'] = 'T' if (prio_in and prio_in.upper().startswith('T')) else ('F' if prio_in else None)
+                record['ir_priority_dt'] = self._normalize_xml_date(self._get_xml_text(intl.find('priority-claimed-date')))
+                # First refusal
+                first_ref = self._get_xml_text(intl.find('first-refusal-in'))
+                record['ir_first_refus_in'] = 'T' if (first_ref and first_ref.upper().startswith('T')) else ('F' if first_ref else None)
+            
+            # Add metadata
+            record['data_source'] = f"{product_id} [XML]"
+            record['batch_number'] = 0
+            return record
+        except Exception as e:
+            self.logger.error(f"Error extracting case-file record: {e}")
+            return None
     
-    def _get_xml_text(self, element) -> str:
-        """Get text content from XML element, return empty string if None"""
-        if element is not None and element.text:
+    def _get_xml_text(self, element) -> Optional[str]:
+        """Get text content from XML element, return None if empty or missing"""
+        if element is not None and element.text and element.text.strip():
             return element.text.strip()
-        return ""
+        return None  # Return None instead of empty string to better indicate missing data
+
+    def _normalize_xml_date(self, yyyymmdd: Optional[str]) -> Optional[str]:
+        """Convert dates like 19550104 to 1955-01-04; return None if invalid"""
+        if not yyyymmdd:
+            return None
+        s = yyyymmdd.strip()
+        if len(s) != 8 or not s.isdigit():
+            return None
+        year, month, day = s[:4], s[4:6], s[6:8]
+        # Basic sanity checks
+        if month == '00' or day == '00':
+            return None
+        return f"{year}-{month}-{day}"
 
 class DatabaseController(BaseController):
     """Controller for database operations and optimization"""
@@ -806,6 +1001,166 @@ class DatabaseController(BaseController):
         except Exception as e:
             self.logger.error(f"Failed to initialize database controller: {e}")
             return False
+
+    def has_existing_rows(self, product_id: str) -> bool:
+        """Return True if the product's table already contains data."""
+        try:
+            conn = psycopg2.connect(**self.db_config)
+            cur = conn.cursor()
+            # Get table name for product
+            cur.execute('SELECT table_name FROM uspto_products WHERE product_id = %s', (product_id,))
+            row = cur.fetchone()
+            if not row:
+                conn.close()
+                return False
+            table_name = row[0]
+            # Count rows
+            cur.execute(f"SELECT COUNT(*) FROM {table_name}")
+            count = cur.fetchone()[0]
+            conn.close()
+            return count > 0
+        except Exception as e:
+            self.logger.error(f"Error checking existing rows for {product_id}: {e}")
+            return False
+
+    def is_file_completed(self, product_id: str, file_name: str) -> bool:
+        """Return True if the given product file has status 'completed'."""
+        try:
+            conn = psycopg2.connect(**self.db_config)
+            cur = conn.cursor()
+            cur.execute(
+                """
+                SELECT status FROM file_processing_history
+                WHERE product_id = %s AND file_name = %s
+                """,
+                (product_id, file_name),
+            )
+            row = cur.fetchone()
+            conn.close()
+            return bool(row and row[0] == 'completed')
+        except Exception as e:
+            self.logger.error(f"Error checking file status for {product_id}/{file_name}: {e}")
+            return False
+
+    def is_product_completed_today(self, product_id: str) -> bool:
+        """Return True if any file for this product was marked completed (ignore date)."""
+        try:
+            conn = psycopg2.connect(**self.db_config)
+            cur = conn.cursor()
+            cur.execute(
+                """
+                SELECT 1
+                FROM file_processing_history
+                WHERE product_id = %s AND status = 'completed'
+                LIMIT 1
+                """,
+                (product_id,),
+            )
+            row = cur.fetchone()
+            conn.close()
+            return bool(row)
+        except Exception as e:
+            self.logger.error(f"Error checking product completed today {product_id}: {e}")
+            return False
+
+    def mark_file_processing(self, product_id: str, file_name: str, file_url: str, file_size: int):
+        """Upsert a history row with status 'processing'."""
+        try:
+            conn = psycopg2.connect(**self.db_config)
+            cur = conn.cursor()
+            # Do not downgrade a completed file to processing
+            cur.execute(
+                """
+                SELECT status FROM file_processing_history
+                WHERE product_id = %s AND file_name = %s
+                """,
+                (product_id, file_name),
+            )
+            row = cur.fetchone()
+            if row and row[0] == 'completed':
+                conn.close()
+                return
+            cur.execute(
+                """
+                INSERT INTO file_processing_history
+                    (product_id, file_name, file_url, file_size, processing_started, status, processing_attempts)
+                VALUES (%s, %s, %s, %s, NOW(), 'processing', 1)
+                ON CONFLICT (product_id, file_name) DO UPDATE SET
+                    file_url = EXCLUDED.file_url,
+                    file_size = EXCLUDED.file_size,
+                    processing_started = CASE WHEN file_processing_history.status = 'completed' THEN file_processing_history.processing_started ELSE NOW() END,
+                    status = CASE WHEN file_processing_history.status = 'completed' THEN 'completed' ELSE 'processing' END,
+                    processing_attempts = CASE WHEN file_processing_history.status = 'completed' THEN file_processing_history.processing_attempts ELSE file_processing_history.processing_attempts + 1 END,
+                    error_message = CASE WHEN file_processing_history.status = 'completed' THEN file_processing_history.error_message ELSE NULL END
+                """,
+                (product_id, file_name, file_url, file_size),
+            )
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            self.logger.error(f"Error marking file processing {product_id}/{file_name}: {e}")
+
+    def mark_file_completed(self, product_id: str, file_name: str, rows_processed: int, rows_saved: int, batch_count: int):
+        """Update history row to completed with counts."""
+        try:
+            conn = psycopg2.connect(**self.db_config)
+            cur = conn.cursor()
+            cur.execute(
+                """
+                UPDATE file_processing_history
+                SET processing_completed = NOW(),
+                    rows_processed = %s,
+                    rows_saved = %s,
+                    batch_count = %s,
+                    status = 'completed',
+                    error_message = NULL
+                WHERE product_id = %s AND file_name = %s
+                """,
+                (rows_processed, rows_saved, batch_count, product_id, file_name),
+            )
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            self.logger.error(f"Error marking file completed {product_id}/{file_name}: {e}")
+
+    def mark_file_error(self, product_id: str, file_name: str, error_message: str):
+        """Update history row to error with message."""
+        try:
+            conn = psycopg2.connect(**self.db_config)
+            cur = conn.cursor()
+            cur.execute(
+                """
+                UPDATE file_processing_history
+                SET status = 'error', error_message = %s
+                WHERE product_id = %s AND file_name = %s
+                """,
+                (error_message[:1000] if error_message else None, product_id, file_name),
+            )
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            self.logger.error(f"Error marking file error {product_id}/{file_name}: {e}")
+
+    def upsert_file_completed(self, product_id: str, file_name: str):
+        """Insert or update a file as completed with today's timestamp."""
+        try:
+            conn = psycopg2.connect(**self.db_config)
+            cur = conn.cursor()
+            cur.execute(
+                """
+                INSERT INTO file_processing_history
+                    (product_id, file_name, status, processing_started, processing_completed, rows_processed, rows_saved, batch_count)
+                VALUES (%s, %s, 'completed', NOW(), NOW(), 0, 0, 0)
+                ON CONFLICT (product_id, file_name) DO UPDATE SET
+                    status = 'completed',
+                    processing_completed = NOW()
+                """,
+                (product_id, file_name),
+            )
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            self.logger.error(f"Error upserting file completed {product_id}/{file_name}: {e}")
     
     def cleanup(self):
         """Cleanup database resources"""
@@ -1191,7 +1546,7 @@ class DatabaseController(BaseController):
             mapped_batch.append(mapped_record)
         
         return mapped_batch
-
+    
     def save_batch(self, batch_data: List[Dict], product_id: str, batch_number: int) -> ProcessingResult:
         """Save a batch of data to the database with column mapping"""
         start_time = time.time()
@@ -1208,21 +1563,49 @@ class DatabaseController(BaseController):
             
             table_name = result[0]
             
-            # Map column names in batch data
-            mapped_batch_data = self._map_insert_columns(batch_data)
+            # Get actual columns in the database table
+            cursor.execute("""
+                SELECT column_name 
+                FROM information_schema.columns 
+                WHERE table_name = %s 
+                ORDER BY ordinal_position
+            """, (table_name,))
             
-            # Add batch number to each record
+            db_columns = set(row[0] for row in cursor.fetchall())
+            
+            # For TRCFECO2, use data as-is (columns already match database)
+            if product_id == 'TRCFECO2':
+                mapped_batch_data = batch_data  # No mapping needed
+            else:
+                # Apply column mapping for other products
+                mapped_batch_data = self._map_insert_columns(batch_data)
+            
+            # Filter to only include columns that exist in the database
+            # and ensure no empty strings are passed to date columns
+            filtered_batch = []
             for record in mapped_batch_data:
-                record['batch_number'] = batch_number
+                filtered_record = {}
+                for k, v in record.items():
+                    if k in db_columns:
+                        # Final check for empty strings (especially date columns)
+                        if isinstance(v, str) and v.strip() == '':
+                            filtered_record[k] = None
+                        elif (k.endswith('_dt') or k.endswith('_date')) and (v is None or v == ''):
+                            filtered_record[k] = None
+                        else:
+                            filtered_record[k] = v
+                
+                filtered_record['batch_number'] = batch_number
+                filtered_batch.append(filtered_record)
             
             # Prepare insert query
-            if mapped_batch_data:
-                columns = list(mapped_batch_data[0].keys())
+            if filtered_batch:
+                columns = list(filtered_batch[0].keys())
                 placeholders = ', '.join(['%s'] * len(columns))
                 column_list = ', '.join(columns)
                 
                 # Convert to tuples
-                batch_tuples = [tuple(record.get(col) for col in columns) for record in mapped_batch_data]
+                batch_tuples = [tuple(record.get(col) for col in columns) for record in filtered_batch]
                 
                 # Execute batch insert using execute_values
                 execute_values(
@@ -1233,7 +1616,7 @@ class DatabaseController(BaseController):
                 )
                 conn.commit()
             
-            saved_count = len(mapped_batch_data)
+            saved_count = len(filtered_batch)
             conn.close()
             
             processing_time = time.time() - start_time
@@ -1254,7 +1637,7 @@ class DatabaseController(BaseController):
                 error_message=str(e),
                 processing_time=time.time() - start_time
             )
-    
+
     def get_processing_stats(self) -> Dict[str, Any]:
         """Get processing statistics"""
         try:
@@ -1294,6 +1677,9 @@ class USPTOOrchestrator:
         self.download_controller = DownloadController(config)
         self.processing_controller = ProcessingController(config)
         self.database_controller = DatabaseController(config)
+        # Optional product filters
+        self.skip_products: List[str] = [p.strip().upper() for p in config.get('skip_products', [])]
+        self.only_products: List[str] = [p.strip().upper() for p in config.get('only_products', [])]
         
         self.controllers = [
             self.api_controller,
@@ -1374,39 +1760,95 @@ class USPTOOrchestrator:
             # Step 3: Process each product
             self.logger.info("Step 3: Processing products...")
             for product in products:
+                # Respect only/skip product filters
+                self.logger.info(
+                    f"Filter state → only={self.only_products or []}, skip={self.skip_products or []}, force={force_redownload}"
+                )
+                if self.only_products and product.product_id.upper() not in self.only_products:
+                    self.logger.info(f"Skipping {product.product_id} - not in only_products filter")
+                    continue
+                if self.skip_products and product.product_id.upper() in self.skip_products:
+                    self.logger.info(f"Skipping {product.product_id} - in skip_products filter")
+                    continue
                 self.logger.info(f"Processing product: {product.title}")
+                # Skip product if it was completed before (any date) OR its table already has rows
+                if not force_redownload:
+                    completed = self.database_controller.is_product_completed_today(product.product_id)
+                    has_rows = self.database_controller.has_existing_rows(product.product_id)
+                    self.logger.info(
+                        f"Skip checks for {product.product_id} → completed={completed}, has_rows={has_rows}, force={force_redownload}"
+                    )
+                    if completed:
+                        self.logger.info(f"Skipping {product.product_id} - product already marked completed (history)")
+                        continue
+                    if has_rows:
+                        self.logger.info(f"Skipping {product.product_id} - table already has data (rows exist)")
+                        continue
+                else:
+                    self.logger.info(f"Force mode: bypassing skip checks for {product.product_id}")
                 
                 # Limit files per product
                 files_to_process = product.files[:max_files_per_product]
                 
                 for file_info in files_to_process:
                     try:
-                        # Download file
-                        file_path = self.download_controller.download_file(file_info, force_redownload)
-                        if not file_path:
-                            results['errors'].append(f"Failed to download: {file_info.filename}")
+                        # Skip file if already completed previously
+                        file_completed = False
+                        if not force_redownload:
+                            file_completed = self.database_controller.is_file_completed(file_info.product_id, file_info.filename)
+                        self.logger.info(
+                            f"File skip check for {file_info.product_id}/{file_info.filename} → completed={file_completed}, force={force_redownload}"
+                        )
+                        if not force_redownload and file_completed:
+                            self.logger.info(f"Skipping {file_info.product_id}/{file_info.filename} - already completed")
+                            results['files_processed'] += 1
                             continue
                         
-                        # Extract if ZIP
-                        if file_info.filename.endswith('.zip'):
-                            extracted_path = self.download_controller.extract_zip_file(file_path, file_info.product_id)
-                            if extracted_path:
-                                # Process extracted files
-                                for extracted_file in self.download_controller.find_data_files(extracted_path):
-                                    batch_count = 0
-                                    for batch in self._process_file(extracted_file, file_info.product_id):
-                                        batch_count += 1
-                                        result = self.database_controller.save_batch(batch, file_info.product_id, batch_count)
-                                        
-                                        results['total_rows_processed'] += result.rows_processed
-                                        results['total_rows_saved'] += result.rows_saved
-                                        
-                                        if not result.success:
-                                            results['errors'].append(f"Batch save error: {result.error_message}")
-                        else:
+                        # Check if files are already extracted
+                        extracted_path = self.download_controller.check_extracted_files_exist(file_info)
+                        file_path = None
+                        file_path_to_process = None
+                        
+                        if not extracted_path:
+                            # Download file if not already extracted
+                            file_path = self.download_controller.download_file(file_info, force_redownload)
+                            if not file_path:
+                                results['errors'].append(f"Failed to download: {file_info.filename}")
+                                continue
+                            
+                            # Extract if ZIP
+                            if file_info.filename.endswith('.zip'):
+                                extracted_path = self.download_controller.extract_zip_file(file_path, file_info.product_id)
+                            else:
+                                # Process single file
+                                file_path_to_process = file_path
+                        
+                        if extracted_path:
+                            # Process extracted files
+                            # Mark file as processing once we begin
+                            self.logger.info(
+                                f"Begin processing extracted files for {file_info.product_id}/{file_info.filename} at {extracted_path}"
+                            )
+                            self.database_controller.mark_file_processing(file_info.product_id, file_info.filename, file_info.download_url, file_info.size or 0)
+                            for extracted_file in self.download_controller.find_data_files(extracted_path):
+                                batch_count = 0
+                                for batch in self._process_file(extracted_file, file_info.product_id):
+                                    batch_count += 1
+                                    result = self.database_controller.save_batch(batch, file_info.product_id, batch_count)
+                                    
+                                    results['total_rows_processed'] += result.rows_processed
+                                    results['total_rows_saved'] += result.rows_saved
+                                    
+                                    if not result.success:
+                                        results['errors'].append(f"Batch save error: {result.error_message}")
+                        elif file_path_to_process:
                             # Process single file
+                            self.logger.info(
+                                f"Begin processing single file for {file_info.product_id}/{file_info.filename} at {file_path_to_process}"
+                            )
+                            self.database_controller.mark_file_processing(file_info.product_id, file_info.filename, file_info.download_url, file_info.size or 0)
                             batch_count = 0
-                            for batch in self._process_file(file_path, file_info.product_id):
+                            for batch in self._process_file(file_path_to_process, file_info.product_id):
                                 batch_count += 1
                                 result = self.database_controller.save_batch(batch, file_info.product_id, batch_count)
                                 
@@ -1416,12 +1858,19 @@ class USPTOOrchestrator:
                                 if not result.success:
                                     results['errors'].append(f"Batch save error: {result.error_message}")
                         
+                        # Mark file completed with today's date
+                        self.logger.info(
+                            f"Marking completed in history for {file_info.product_id}/{file_info.filename}"
+                        )
+                        self.database_controller.upsert_file_completed(file_info.product_id, file_info.filename)
                         results['files_processed'] += 1
                         
                     except Exception as e:
                         error_msg = f"Error processing file {file_info.filename}: {e}"
                         results['errors'].append(error_msg)
                         self.logger.error(error_msg)
+                        # Mark file error
+                        self.database_controller.mark_file_error(file_info.product_id, file_info.filename, error_msg)
             
             results['success'] = True
             processing_time = time.time() - start_time

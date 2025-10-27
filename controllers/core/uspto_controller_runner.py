@@ -142,7 +142,9 @@ def run_controller_processor(config_file: str = "uspto_controller_config.json",
                            force_redownload: bool = False,
                            batch_size: int = None,
                            memory_limit: int = None,
-                           product_id: str = None):
+                           product_id: str = None,
+                           skip_products: str = None,
+                           only_products: str = None):
     """Run the controller-based USPTO processor"""
     
     # Load configuration
@@ -157,6 +159,14 @@ def run_controller_processor(config_file: str = "uspto_controller_config.json",
         config.set('processing.batch_size', batch_size)
     if memory_limit is not None:
         config.set('processing.memory_limit_mb', memory_limit)
+    
+    # Apply product filters from CLI (comma-separated)
+    if skip_products:
+        skips = [p.strip().upper() for p in skip_products.split(',') if p.strip()]
+        config.set('skip_products', skips)
+    if only_products:
+        onlys = [p.strip().upper() for p in only_products.split(',') if p.strip()]
+        config.set('only_products', onlys)
     
     # Setup environment
     setup_environment()
@@ -315,6 +325,10 @@ Examples:
                        help='Process specific product only')
     parser.add_argument('--test', action='store_true',
                        help='Test all controllers')
+    parser.add_argument('--skip-products', type=str,
+                       help='Comma-separated product IDs to skip (e.g., TRCFECO2,TRASECO)')
+    parser.add_argument('--only-products', type=str,
+                       help='Comma-separated product IDs to exclusively process')
     
     args = parser.parse_args()
     
@@ -330,7 +344,9 @@ Examples:
         force_redownload=args.force_redownload,
         batch_size=args.batch_size,
         memory_limit=args.memory_limit,
-        product_id=args.product_id
+        product_id=args.product_id,
+        skip_products=args.skip_products,
+        only_products=args.only_products
     )
     
     exit(0 if success else 1)
