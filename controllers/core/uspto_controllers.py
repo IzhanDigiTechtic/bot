@@ -515,7 +515,7 @@ class ProcessingController(BaseController):
                             record_count += len(record_or_records)
                         else:
                             batch.append(record_or_records)
-                            record_count += 1
+                        record_count += 1
                         
                         # Optional: stop immediately after first non-empty assignment, for debugging
                         if os.environ.get('USPTO_DEBUG_STOP_AFTER_FIRST_NONEMPTY', 'false').lower() == 'true' and self._debug_found_nonempty:
@@ -532,11 +532,11 @@ class ProcessingController(BaseController):
                                 self.logger.info("USPTO_DEBUG_ONE_BATCH=true → stopping after first yielded batch")
                                 return
                     # Clear the processed target element AFTER processing it
-                    elem.clear()
-            
-            # Progress reporting every 10000 elements
-            if record_count > 0 and record_count % 10000 == 0:
-                self.logger.info(f"Processed {record_count} records so far...")
+                elem.clear()
+                
+                # Progress reporting every 10000 elements
+                if record_count > 0 and record_count % 10000 == 0:
+                    self.logger.info(f"Processed {record_count} records so far...")
             
             # Yield remaining records
             if batch:
@@ -601,6 +601,27 @@ class ProcessingController(BaseController):
                             if stop_after_first_batch:
                                 self.logger.info("USPTO_DEBUG_ONE_BATCH=true → stopping after first yielded batch")
                                 return
+
+            # Fallback for TTAB: if nothing matched target elements, scan for any nodes with proceeding-number
+            if product_id in ['TTABTDXF', 'TTABYR'] and not batch:
+                matched = 0
+                for el in root.iter():
+                    if self._find_first_elem_by_local(el, 'proceeding-number') is not None:
+                        rec = self._extract_ttab_record(el, product_id)
+                        if rec:
+                            batch.append(rec)
+                            matched += 1
+                            if len(batch) >= self.batch_size:
+                                yield batch
+                                batch = []
+                                if stop_after_first_batch:
+                                    self.logger.info("USPTO_DEBUG_ONE_BATCH=true → stopping after first yielded batch (TTAB fallback)")
+                                    return
+                if matched:
+                    try:
+                        self.logger.info(f"TTAB fallback matched {matched} proceeding-like elements by proceeding-number")
+                    except Exception:
+                        pass
             
             # Yield remaining records
             if batch:
@@ -617,8 +638,9 @@ class ProcessingController(BaseController):
             'TRTDXFAG': ['assignment-entry'],
             'TRTDXFAP': ['case-file', 'trademark-application'],
             'TRTYRAP': ['case-file', 'trademark-application'],
-            'TTABTDXF': ['proceeding', 'ttab-proceeding'],
-            'TTABYR': ['proceeding', 'ttab-proceeding']
+            # Include proceeding-entry as primary TTAB node
+            'TTABTDXF': ['proceeding-entry', 'proceeding', 'ttab-proceeding'],
+            'TTABYR': ['proceeding-entry', 'proceeding', 'ttab-proceeding']
         }
         
         return element_mapping.get(product_id, ['record', 'item'])
@@ -819,11 +841,14 @@ class ProcessingController(BaseController):
             # Special handling for case-file XML (applications) for TRTDXFAP/TRTYRAP
             if product_id in ['TRTDXFAP', 'TRTYRAP'] and self._local_tag(getattr(element, 'tag', '')) == 'case-file':
                 return self._extract_case_file_record(element, product_id)
+            # Special handling for TTAB proceedings (proceeding-entry or older tags)
+            if product_id in ['TTABTDXF', 'TTABYR'] and self._local_tag(getattr(element, 'tag', '')) in ['proceeding-entry', 'proceeding', 'ttab-proceeding']:
+                return self._extract_ttab_record(element, product_id)
             
             # Default extraction for other XML types
             record = {}
             
-            # Extract basic fields
+            # Extract basic fields (direct children only)
             for child in element:
                 if child.text and child.text.strip():
                     key = self._local_tag(child.tag).replace('-', '_').lower()
@@ -839,6 +864,81 @@ class ProcessingController(BaseController):
             self.logger.error(f"Error extracting record: {e}")
             return None
     
+    def _extract_ttab_record(self, proc_elem, product_id: str) -> Optional[Dict]:
+        """Map TTAB proceeding to DB schema fields from proceeding-entry (or compatible nodes)."""
+        try:
+            def first_text_of(tags: List[str], root=None) -> Optional[str]:
+                base = root if root is not None else proc_elem
+                for t in tags:
+                    el = self._find_first_elem_by_local(base, t)
+                    if el is not None:
+                        txt = self._get_xml_text(el)
+                        if txt:
+                            return txt
+                return None
+ 
+            def first_name_under(el) -> Optional[str]:
+                if el is None:
+                    return None
+                for name_tag in ['name', 'party-name', 'person-or-organization-name']:
+                    name_el = self._find_first_elem_by_local(el, name_tag)
+                    if name_el is not None:
+                        txt = self._get_xml_text(name_el)
+                        if txt:
+                            return txt
+                # Fallback: direct text
+                return self._get_xml_text(el)
+ 
+            def find_party_by_role_code(code: str) -> Optional[str]:
+                # role-code P: applicant/petitioner/plaintiff; D: defendant/opposer/respondent
+                parties = self._find_first_elem_by_local(proc_elem, 'party-information')
+                # If not present, search whole element
+                search_root = parties if parties is not None else proc_elem
+                # Iterate party nodes with matching role-code
+                for party in search_root.iter():
+                    if self._local_tag(getattr(party, 'tag', '')).lower() != 'party':
+                        continue
+                    rc = first_text_of(['role-code'], party)
+                    if (rc or '').strip().upper() == code.upper():
+                        nm = first_name_under(party)
+                        if nm:
+                            return nm
+                return None
+ 
+            record: Dict[str, Any] = {}
+ 
+            # Core identifiers (based on provided structure)
+            record['proceeding_number'] = first_text_of(['proceeding-number', 'number'])
+            record['proceeding_type'] = first_text_of(['proceeding-type', 'proceeding-type-code', 'type-code'])
+            record['status'] = first_text_of(['status', 'status-code'])
+ 
+            # Filing date normalized
+            raw_dt = first_text_of(['filing-date', 'filed-date'])
+            record['filing_date'] = self._normalize_xml_date(raw_dt) if raw_dt else None
+ 
+            # Parties
+            record['applicant_name'] = find_party_by_role_code('P')
+            record['opposer_name'] = find_party_by_role_code('D')
+ 
+            # Mark and goods/services
+            record['mark_description'] = first_text_of(['mark-identification', 'mark-text', 'mark-description'])
+            goods_chunks: List[str] = []
+            for tag in ['goods-services', 'goods-and-services', 'gs-text', 'goods', 'services']:
+                el = self._find_first_elem_by_local(proc_elem, tag)
+                if el is not None:
+                    txt = self._get_xml_text(el)
+                    if txt:
+                        goods_chunks.append(txt)
+            record['goods_services'] = '; '.join(dict.fromkeys([g.strip() for g in goods_chunks if g.strip()])) or None
+ 
+            # Metadata
+            record['data_source'] = f"{product_id} [XML]"
+            record['batch_number'] = 0
+            return record
+        except Exception as e:
+            self.logger.error(f"Error extracting TTAB record: {e}")
+            return None
+
     def _extract_assignment_record(self, assignment_elem, product_id: str) -> Optional[Dict]:
         """Extract assignment record from XML element"""
         
@@ -1496,6 +1596,9 @@ class DatabaseController(BaseController):
             # Build and execute INSERT
             cols_sql = ", ".join(insert_keys)
             insert_sql = f"INSERT INTO {table_name} ({cols_sql}) VALUES %s"
+            # If TTAB tables have unique proceeding_number, ignore duplicates
+            if product_id.upper() in ['TTABTDXF', 'TTABYR'] and 'proceeding_number' in insert_keys:
+                insert_sql += " ON CONFLICT (proceeding_number) DO NOTHING"
             conn = psycopg2.connect(**self.db_config)
             cur = conn.cursor()
             execute_values(cur, insert_sql, rows)
@@ -1517,8 +1620,8 @@ class DatabaseController(BaseController):
             cur = conn.cursor()
             cur.execute(
                 """
-                SELECT column_name
-                FROM information_schema.columns
+                SELECT column_name 
+                FROM information_schema.columns 
                 WHERE table_schema = %s AND table_name = %s
                 """,
                 (self.schema, table_name),
@@ -1592,7 +1695,7 @@ class USPTOOrchestrator:
             self.logger.info("Step 1: Fetching available datasets...")
             products = self.api_controller.get_trademark_datasets()
             self.logger.info(f"Found {len(products)} products")
-
+            
             # Step 2: Register products
             self.logger.info("Step 2: Registering products and creating tables...")
             for p in products:
@@ -1601,11 +1704,11 @@ class USPTOOrchestrator:
                     self.logger.info(f"Registered product: {p.product_id}")
                 except Exception:
                     pass
-
+            
             # Step 3: Process products
             self.logger.info("Step 3: Processing products...")
             self.logger.info(f"Filter state → only={self.only_products}, skip={self.skip_products}, force={self.force_redownload}")
-
+            
             for p in products:
                 pid = (p.product_id or '').upper()
                 # Respect filters
@@ -1615,7 +1718,7 @@ class USPTOOrchestrator:
                 if self.skip_products and pid in self.skip_products:
                     self.logger.info(f"Skipping {pid} - in skip_products filter")
                     continue
-
+                
                 processed_files = 0
                 # Process up to max_files per product
                 for f in p.files:
@@ -1637,24 +1740,24 @@ class USPTOOrchestrator:
                             extract_dir = self.download_controller.extract_zip_file(zip_path, pid)
                             if not extract_dir:
                                 continue
-
+                        
                         # Find data files and process
                         data_files = self.download_controller.find_data_files(extract_dir)
                         # Log what we found
                         csv_count = len([x for x in data_files if x.suffix.lower() == '.csv'])
                         xml_count = len([x for x in data_files if x.suffix.lower() == '.xml'])
                         self.logger.info(f"Found {csv_count} CSV and {xml_count} XML in {extract_dir}")
-
+                        
                         # Mark processing start
                         try:
                             self.database_controller.mark_file_processing(pid, f.filename, f.download_url, f.size or 0)
                         except Exception:
                             pass
-
+                        
                         rows_processed = 0
                         rows_saved = 0
                         batch_count = 0
-
+                        
                         for path in data_files:
                             if path.suffix.lower() == '.xml':
                                 # Drive the processing pipeline; this yields batches with records
@@ -1667,13 +1770,13 @@ class USPTOOrchestrator:
                                     batch_count += 1
                                     rows_processed += len(batch)
                                     rows_saved += self.database_controller.save_batch(pid, batch)
-
+                        
                         # Mark completed
                         try:
                             self.database_controller.mark_file_completed(pid, f.filename, rows_processed, rows_saved, batch_count)
                         except Exception:
                             pass
-
+                        
                         processed_files += 1
                     except Exception as e:
                         try:
@@ -1681,7 +1784,7 @@ class USPTOOrchestrator:
                         except Exception:
                             pass
                         continue
-
+            
             self.logger.info("USPTO processing completed.")
         except Exception as e:
             self.logger.error(f"Error during processing: {e}")
