@@ -116,6 +116,12 @@ class USPTOFileProcessor:
                 hash_md5.update(chunk)
         return hash_md5.hexdigest()
 
+    def _get_xml_text(self, element: Optional[ET.Element]) -> Optional[str]:
+        """Safely extract text from XML element, handling None or empty cases."""
+        if element is not None and element.text and element.text.strip():
+            return element.text.strip()
+        return None
+
 class CSVProcessor(USPTOFileProcessor):
     """Processor for CSV files"""
     

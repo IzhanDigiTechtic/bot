@@ -171,9 +171,19 @@ def run_controller_processor(config_file: str = "uspto_controller_config.json",
     # Setup environment
     setup_environment()
     
-    # Get flattened configuration for orchestrator
-    orchestrator_config = config.get_flat_config()
-    
+    # Explicitly reconstruct orchestrator_config with required sections
+    orchestrator_config = {
+        'api': config.get('api'),
+        'download': config.get('download'),
+        'processing': config.get('processing'),
+        'database': config.get('database'),
+        'orchestrator': config.get('orchestrator'),
+        'skip_products': config.get('skip_products'),
+        'only_products': config.get('only_products'),
+    }
+
+    print("Orchestrator Configuration:", orchestrator_config)
+
     # Create orchestrator
     orchestrator = USPTOOrchestrator(orchestrator_config)
     
@@ -186,35 +196,10 @@ def run_controller_processor(config_file: str = "uspto_controller_config.json",
         
         print("✅ All controllers initialized successfully")
         
-        # Run full process
-        print("\n🚀 Starting USPTO data processing pipeline...")
-        results = orchestrator.run_full_process(
-            max_files_per_product=config.get('orchestrator.max_files_per_product'),
-            force_redownload=config.get('download.force_redownload')
-        )
-        
-        # Print detailed results
-        print("\n" + "="*60)
-        print("📊 PROCESSING RESULTS")
-        print("="*60)
-        print(f"✅ Success: {results['success']}")
-        print(f"🏭 Products Processed: {results['products_processed']}")
-        print(f"📁 Files Processed: {results['files_processed']}")
-        print(f"📝 Total Rows Processed: {results['total_rows_processed']:,}")
-        print(f"💾 Total Rows Saved: {results['total_rows_saved']:,}")
-        
-        if results['total_rows_processed'] > 0:
-            success_rate = (results['total_rows_saved'] / results['total_rows_processed']) * 100
-            print(f"📈 Success Rate: {success_rate:.1f}%")
-        
-        if results['errors']:
-            print(f"\n❌ Errors ({len(results['errors'])}):")
-            for i, error in enumerate(results['errors'], 1):
-                print(f"  {i}. {error}")
-        else:
-            print("\n🎉 No errors encountered!")
-        
-        return results['success']
+        # Run full process using attributes directly
+        orchestrator.run_full_process()
+
+        return True  # Indicate successful run.
     
     except KeyboardInterrupt:
         print("\n⚠️ Processing interrupted by user")
